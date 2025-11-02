@@ -1,3 +1,9 @@
+spring:
+  application:
+    name: solo-leveling-telegram
+  threads:
+    virtual:
+      enabled: true
 app:
   telegram:
     bot:
@@ -7,3 +13,5 @@ app:
       webhook:
         host: https://solo-leveling-telegram.ru.tuna.am
         path: webbook
+server:
+  port: 10005

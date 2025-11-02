@@ -1,3 +1,2 @@
 com.sleepkqq.sololeveling.telegram.bot.config.TelegramBotConfig
 com.sleepkqq.sololeveling.telegram.bot.config.RestConfig
-com.sleepkqq.sololeveling.telegram.bot.service.UpdateHandlerService

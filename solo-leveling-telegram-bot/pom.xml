@@ -32,6 +32,13 @@
       <artifactId>telegrambots-springboot-webhook-starter</artifactId>
       <version>${telegrambots.version}</version>
     </dependency>
+
+    <!-- solo leveling -->
+    <dependency>
+      <groupId>com.sleepkqq</groupId>
+      <artifactId>solo-leveling-telegram-model</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>

@@ -1,4 +1,4 @@
-package com.sleepkqq.sololeveling.telegram.service
+package com.sleepkqq.sololeveling.telegram
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
