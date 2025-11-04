@@ -6,6 +6,7 @@ import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Serialized;
 import org.babyfish.jimmer.sql.Table;
+import org.jetbrains.annotations.Nullable;
 
 @Entity
 @Table(name = "telegram_user_sessions")
@@ -17,6 +18,7 @@ public interface TelegramUserSession extends Model {
   @Serialized
   BotSessionState state();
 
+  @Nullable
   @Serialized
   BotSessionState pendingInterruptState();
 }

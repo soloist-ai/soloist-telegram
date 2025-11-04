@@ -1,6 +1,12 @@
 spring:
   application:
     name: solo-leveling-telegram
+  datasource:
+    url: jdbc:postgresql://localhost:5432/solo_leveling
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  profiles:
+    include: jimmer
   threads:
     virtual:
       enabled: true

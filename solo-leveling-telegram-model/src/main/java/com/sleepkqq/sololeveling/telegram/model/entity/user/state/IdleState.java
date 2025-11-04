@@ -1,5 +1,8 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("IdleState")
 public record IdleState() implements BotSessionState {
 
   @Override

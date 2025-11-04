@@ -1,2 +1,14 @@
+# config
 com.sleepkqq.sololeveling.telegram.bot.config.TelegramBotConfig
 com.sleepkqq.sololeveling.telegram.bot.config.RestConfig
+
+# dispatchers
+com.sleepkqq.sololeveling.telegram.bot.dispatcher.UpdateDispatcher
+com.sleepkqq.sololeveling.telegram.bot.dispatcher.CallbackQueryDispatcher
+com.sleepkqq.sololeveling.telegram.bot.dispatcher.MessageDispatcher
+com.sleepkqq.sololeveling.telegram.bot.dispatcher.InlineQueryDispatcher
+
+# handlers
+com.sleepkqq.sololeveling.telegram.bot.handler.impl.CallbackHandlerImpl
+com.sleepkqq.sololeveling.telegram.bot.handler.impl.TextHandler
+com.sleepkqq.sololeveling.telegram.bot.handler.impl.CommandHandler

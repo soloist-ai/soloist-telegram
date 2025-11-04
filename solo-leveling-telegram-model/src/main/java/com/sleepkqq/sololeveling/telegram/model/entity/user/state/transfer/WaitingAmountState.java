@@ -1,7 +1,9 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 
+@JsonTypeName("WaitingAmountState")
 public record WaitingAmountState() implements BotSessionState {
 
   @Override

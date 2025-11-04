@@ -35,3 +35,16 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     defaultValue: 0
+
+  - changeSet:
+      id: add-pending-interrupt-state-to-telegram-user-sessions
+      author: sleepkqq
+      changes:
+        - addColumn:
+            tableName: telegram_user_sessions
+            columns:
+              - column:
+                  name: pending_interrupt_state
+                  type: JSONB
+                  constraints:
+                    nullable: true

@@ -32,7 +32,7 @@ class TelegramUserSessionServiceImpl(
 	@Transactional
 	override fun update(session: TelegramUserSession, now: Instant): TelegramUserSession =
 		telegramUserSessionRepository.save(
-			Immutables.createTelegramUserSession {
+			Immutables.createTelegramUserSession(session) {
 				it.setUpdatedAt(now)
 			},
 			SaveMode.UPDATE_ONLY
