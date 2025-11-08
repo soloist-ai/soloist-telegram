@@ -5,12 +5,24 @@ spring:
     url: jdbc:postgresql://localhost:5432/solo_leveling
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      lettuce:
+        pool:
+          max-active: 8
   profiles:
     include: jimmer
   threads:
     virtual:
       enabled: true
 app:
+  grpc:
+    services:
+      player:
+        host: localhost
+        port: 11001
   telegram:
     bot:
       token: ${TELEGRAM_BOT_TOKEN_DEV}
@@ -19,5 +31,6 @@ app:
       webhook:
         host: https://solo-leveling-telegram.ru.tuna.am
         path: webbook
+        secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_DEV}
 server:
   port: 10005

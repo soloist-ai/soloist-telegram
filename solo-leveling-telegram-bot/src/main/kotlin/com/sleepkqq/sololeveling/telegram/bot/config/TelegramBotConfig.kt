@@ -35,7 +35,10 @@ class TelegramBotConfig(
 		try {
 			val response = restTemplate.postForObject(
 				"${telegramBotProperties.api.url}${telegramBotProperties.token}/setWebhook",
-				SetWebhook.builder().url(telegramBotProperties.webhook.url).build(),
+				SetWebhook.builder()
+					.url(telegramBotProperties.webhook.url)
+					.secretToken(telegramBotProperties.webhook.secretToken)
+					.build(),
 				String::class.java
 			)
 			log.info("Webhook registered: ${telegramBotProperties.webhook.url}, response=$response")

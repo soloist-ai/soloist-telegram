@@ -12,6 +12,7 @@ data class TelegramBotProperties(
 	data class Webhook(
 		val host: String,
 		val path: String,
+		val secretToken: String
 	) {
 		val url: String
 			get() = "$host/$path"

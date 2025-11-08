@@ -1,6 +1,6 @@
-package com.sleepkqq.sololeveling.telegram.bot.service.impl
+package com.sleepkqq.sololeveling.telegram.bot.service.session.impl
 
-import com.sleepkqq.sololeveling.telegram.bot.service.TelegramUserSessionService
+import com.sleepkqq.sololeveling.telegram.bot.service.session.TelegramUserSessionService
 import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.TelegramUserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.TelegramUserSessionFetcher

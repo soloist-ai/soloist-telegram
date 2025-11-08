@@ -21,16 +21,34 @@
     <module>solo-leveling-telegram-model</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.grpc</groupId>
+        <artifactId>spring-grpc-dependencies</artifactId>
+        <version>${spring-grpc.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <properties>
     <java.version>24</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven-compliler.version>3.14.0</maven-compliler.version>
+    <maven-compiler.version>3.14.0</maven-compiler.version>
 
     <!-- kotlin -->
     <kotlin.version>2.2.21</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
+
+    <!-- solo leveling -->
+    <solo-leveling-lib.version>1.1.0</solo-leveling-lib.version>
+
+    <!-- grpc -->
+    <spring-grpc.version>0.11.0</spring-grpc.version>
 
     <!-- telegrambots -->
     <telegrambots.version>9.2.0</telegrambots.version>

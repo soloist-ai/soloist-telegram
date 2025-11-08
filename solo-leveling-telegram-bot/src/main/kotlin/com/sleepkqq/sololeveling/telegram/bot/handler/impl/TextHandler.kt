@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.handler.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.handler.MessageHandler
-import com.sleepkqq.sololeveling.telegram.bot.service.TelegramUserSessionService
+import com.sleepkqq.sololeveling.telegram.bot.service.session.TelegramUserSessionService
 import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod

@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/solo_leveling
+  data:
+    redis:
+      host: redis
+app:
+  grpc:
+    services:
+      player:
+        host: solo-leveling-player
+        port: 90
+  telegram:
+    bot:
+      token: ${TELEGRAM_BOT_TOKEN_PROD}
+      webhook:
+        host: https://telegram.solo-leveling.online
+        secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_PROD}
+server:
+  port: 8080

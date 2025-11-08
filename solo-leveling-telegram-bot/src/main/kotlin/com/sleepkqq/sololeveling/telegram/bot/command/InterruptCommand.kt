@@ -1,26 +1,29 @@
 package com.sleepkqq.sololeveling.telegram.bot.command
 
+import com.sleepkqq.sololeveling.telegram.bot.localization.LocalizationCode
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
 import com.sleepkqq.sololeveling.telegram.model.entity.user.TelegramUserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.IdleState
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.message.Message
 
-interface InterruptCommand : Command {
+abstract class InterruptCommand(
+	private val i18nService: I18nService
+) : Command {
 
-	fun handle(message: Message, session: TelegramUserSession): BotApiMethod<*>? {
+	fun handle(message: Message, session: TelegramUserSession): BotApiMethod<*>? =
 		if (session.state() is IdleState) {
-			return changeState(message, session)
+			changeState(message, session)
 		} else {
 			pendingInterruptState(message, session)
-			return SendMessage(
+			SendMessage(
 				message.chatId.toString(),
-				"Вы уверены что хотите прервать текущее заполнение?"
+				i18nService.getMessage(LocalizationCode.COMMAND_INTERRUPT_QUESTION.path)
 			)
 		}
-	}
 
-	fun changeState(message: Message, session: TelegramUserSession): BotApiMethod<*>?
+	abstract fun changeState(message: Message, session: TelegramUserSession): BotApiMethod<*>?
 
-	fun pendingInterruptState(message: Message, session: TelegramUserSession)
+	abstract fun pendingInterruptState(message: Message, session: TelegramUserSession)
 }
