@@ -1,5 +1,6 @@
-package com.sleepkqq.sololeveling.telegram.bot.command
+package com.sleepkqq.sololeveling.telegram.bot.command.info
 
+import com.sleepkqq.sololeveling.telegram.bot.command.Command
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.telegram.telegrambots.meta.api.objects.message.Message
 

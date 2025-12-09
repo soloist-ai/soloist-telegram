@@ -1,6 +1,6 @@
 package com.sleepkqq.sololeveling.telegram.bot.command
 
-sealed interface Command {
+interface Command {
 
 	val command: String
 }

@@ -1,11 +1,13 @@
 package com.sleepkqq.sololeveling.telegram.bot.handler.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.command.Command
-import com.sleepkqq.sololeveling.telegram.bot.command.InfoCommand
-import com.sleepkqq.sololeveling.telegram.bot.command.InterruptCommand
+import com.sleepkqq.sololeveling.telegram.bot.command.info.InfoCommand
+import com.sleepkqq.sololeveling.telegram.bot.command.interrupt.InterruptCommand
+import com.sleepkqq.sololeveling.telegram.bot.command.interrupt.InterruptCommand.InterruptCommandResult.Question
+import com.sleepkqq.sololeveling.telegram.bot.command.interrupt.InterruptCommand.InterruptCommandResult.StateChanged
 import com.sleepkqq.sololeveling.telegram.bot.handler.MessageHandler
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
-import com.sleepkqq.sololeveling.telegram.bot.service.session.TelegramUserSessionService
+import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
@@ -14,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.message.Message
 @Component
 class CommandHandler(
 	commands: List<Command>,
-	private val telegramUserSessionService: TelegramUserSessionService,
+	private val userSessionService: UserSessionService,
 	private val i18nService: I18nService
 ) : MessageHandler {
 
@@ -32,17 +34,21 @@ class CommandHandler(
 			}
 
 			is InterruptCommand -> {
-				val session = telegramUserSessionService.find(message.chatId)
-					?: telegramUserSessionService.register(message.chatId)
+				val session = userSessionService.find(message.chatId)
+					?: userSessionService.register(message.chatId)
 
 				when (val result = command.handle(message, session)) {
-					is InterruptCommand.InterruptCommandResult.Question ->
-						i18nService.sendMessage(message.chatId, result.localizationCode)
+					is Question -> i18nService.sendMessage(message.chatId, result.localizationCode)
 
-					is InterruptCommand.InterruptCommandResult.StateChanged ->
-						i18nService.sendMessage(message.chatId, result.localizationCode, result.params)
+					is StateChanged -> i18nService.sendMessage(
+						message.chatId,
+						result.localizationCode,
+						result.params
+					)
 				}
 			}
+
+			else -> null
 		}
 	}
 }

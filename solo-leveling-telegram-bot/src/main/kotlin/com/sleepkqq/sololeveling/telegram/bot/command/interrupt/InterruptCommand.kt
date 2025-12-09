@@ -1,13 +1,14 @@
-package com.sleepkqq.sololeveling.telegram.bot.command
+package com.sleepkqq.sololeveling.telegram.bot.command.interrupt
 
+import com.sleepkqq.sololeveling.telegram.bot.command.Command
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
-import com.sleepkqq.sololeveling.telegram.model.entity.user.TelegramUserSession
+import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.IdleState
 import org.telegram.telegrambots.meta.api.objects.message.Message
 
-abstract class InterruptCommand : Command {
+interface InterruptCommand : Command {
 
-	fun handle(message: Message, session: TelegramUserSession): InterruptCommandResult =
+	fun handle(message: Message, session: UserSession): InterruptCommandResult =
 		if (session.state() is IdleState) {
 			changeState(message, session)
 		} else {
@@ -15,12 +16,12 @@ abstract class InterruptCommand : Command {
 			InterruptCommandResult.Question()
 		}
 
-	abstract fun changeState(
+	fun changeState(
 		message: Message,
-		session: TelegramUserSession
+		session: UserSession
 	): InterruptCommandResult.StateChanged
 
-	abstract fun pendingInterruptState(message: Message, session: TelegramUserSession)
+	fun pendingInterruptState(message: Message, session: UserSession)
 
 	sealed class InterruptCommandResult {
 

@@ -8,10 +8,10 @@ import com.sleepkqq.sololeveling.telegram.bot.grpc.client.UserApi
 import io.grpc.StatusRuntimeException
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.Cacheable
-import org.springframework.retry.annotation.Backoff
 import org.springframework.retry.annotation.Recover
 import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Service
+import java.util.Locale
 
 @Service
 class UserInfoService(
@@ -28,7 +28,6 @@ class UserInfoService(
 	@Retryable(
 		retryFor = [StatusRuntimeException::class],
 		maxAttempts = 3,
-		backoff = Backoff(delay = 100, multiplier = 2.0, maxDelay = 1000),
 		recover = "recoverUserAdditionalInfo"
 	)
 	fun getUserAdditionalInfo(): GetUserAdditionalInfoResponse {
@@ -44,7 +43,7 @@ class UserInfoService(
 
 		return GetUserAdditionalInfoResponse.newBuilder()
 			.addRoles(UserRole.USER)
-			.setLocale(UserLocale.newBuilder().setTag("en").setIsManual(false))
+			.setLocale(UserLocale.newBuilder().setTag(Locale.ENGLISH.language).setIsManual(false))
 			.build()
 	}
 }

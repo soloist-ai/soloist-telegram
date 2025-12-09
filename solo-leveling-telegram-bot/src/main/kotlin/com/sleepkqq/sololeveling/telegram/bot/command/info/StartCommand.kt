@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.objects.message.Message
 
 @Component
-class HelpCommand : InfoCommand {
+class StartCommand : InfoCommand {
 
-	override val command: String = "/help"
+	override val command: String = "/start"
 
 	override fun handle(message: Message): InfoCommandResult =
-		InfoCommandResult(LocalizationCode.CMD_HELP)
+		InfoCommandResult(LocalizationCode.CMD_START)
 }
