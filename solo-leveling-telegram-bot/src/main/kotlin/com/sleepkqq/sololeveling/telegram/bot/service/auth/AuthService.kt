@@ -41,6 +41,5 @@ class AuthService(
 		else -> null
 	}
 
-	fun getCurrentUser(): User? =
-		SecurityContextHolder.getContext().authentication.principal as? User
+	fun getCurrentUser(): User? = SecurityContextHolder.getContext().authentication.principal as? User
 }

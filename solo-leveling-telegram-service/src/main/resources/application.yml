@@ -12,6 +12,8 @@ spring:
       lettuce:
         pool:
           max-active: 8
+  cache:
+    type: redis
   profiles:
     include: jimmer
   threads:
@@ -32,5 +34,12 @@ app:
         host: https://solo-leveling-telegram.ru.tuna.am
         path: webbook
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_DEV}
+  cache:
+    redis:
+      default-ttl: 1h
+      caches:
+        user-info:
+          ttl: 30m
+          nullable: false
 server:
   port: 10005
