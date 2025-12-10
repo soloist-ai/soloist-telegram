@@ -4,7 +4,7 @@ import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Fetchers
+import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
@@ -17,19 +17,19 @@ class InterruptConfirmCallback(
 
 	override val action: CallbackAction = CallbackAction.INTERRUPT_CONFIRM
 
-	override fun handle(callbackQuery: CallbackQuery): BotApiMethod<*> {
-		val chatId = callbackQuery.message.chatId
+	override fun handle(callbackQuery: CallbackQuery, session: UserSession): BotApiMethod<*> {
+		val userId = callbackQuery.from.id
 		val messageId = callbackQuery.message.messageId
 
-		val pendingInterruptState = userSessionService.get(
-			chatId,
-			Fetchers.USER_SESSION_FETCHER.pendingInterruptState()
+		val pendingInterruptState = session.pendingInterruptState()
+			?: return i18nService.deleteMessage(userId, messageId)
+
+		userSessionService.confirmInterruptState(userId)
+
+		return i18nService.editMessageText(
+			userId,
+			messageId,
+			pendingInterruptState.onEnterLocalized()
 		)
-			.pendingInterruptState()
-			?: return i18nService.deleteMessage(chatId, messageId)
-
-		userSessionService.confirmInterruptState(chatId)
-
-		return i18nService.editMessageText(chatId, messageId, pendingInterruptState.onEnterLocalized())
 	}
 }

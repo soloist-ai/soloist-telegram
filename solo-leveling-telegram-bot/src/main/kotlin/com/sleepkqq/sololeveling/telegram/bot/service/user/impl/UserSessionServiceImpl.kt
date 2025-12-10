@@ -10,7 +10,6 @@ import com.sleepkqq.sololeveling.telegram.model.repository.user.UserSessionRepos
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 import java.util.UUID
 
 @Service
@@ -38,13 +37,8 @@ class UserSessionServiceImpl(
 	}
 
 	@Transactional
-	override fun update(session: UserSession, now: Instant): UserSession =
-		userSessionRepository.save(
-			Immutables.createUserSession(session) {
-				it.setUpdatedAt(now)
-			},
-			SaveMode.UPDATE_ONLY
-		)
+	override fun update(session: UserSession): UserSession =
+		userSessionRepository.save(session, SaveMode.UPDATE_ONLY)
 
 	@Transactional
 	override fun confirmInterruptState(userId: Long) =
@@ -53,4 +47,9 @@ class UserSessionServiceImpl(
 	@Transactional
 	override fun cancelInterruptState(userId: Long) =
 		userSessionRepository.cancelInterruptState(userId)
+
+	@Transactional
+	override fun idleState(userId: Long) {
+		userSessionRepository.updateState(userId, IdleState())
+	}
 }

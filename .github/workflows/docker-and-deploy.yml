@@ -1,0 +1,89 @@
+name: Docker build, Push and Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+    inputs:
+      replicas:
+        description: 'Number of replicas (pods) to deploy'
+        required: true
+        default: 1
+        type: number
+
+jobs:
+  docker-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install gettext for envsubst
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext-base
+
+      - name: Create settings.xml with environment variables
+        run: |
+          cat << 'EOF' > ./settings-template.xml
+          ${{ secrets.MAVEN_SETTINGS_XML }}
+          EOF
+
+          export GITHUB_USER="${{ secrets.GITHUB_USER }}"
+          export PACKAGES_TOKEN="${{ secrets.PACKAGES_TOKEN }}"
+
+          envsubst < ./settings-template.xml > ./settings.xml
+          rm -f ./settings-template.xml
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USER }}/solo-leveling-telegram:latest
+            ${{ secrets.DOCKERHUB_USER }}/solo-leveling-telegram:${{ github.sha }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Set environment variables for deployment
+        run: |
+          echo "GIT_COMMIT_SHA=${{ github.sha }}" >> $GITHUB_ENV
+          echo "DOCKERHUB_USER=${{ secrets.DOCKERHUB_USER }}" >> $GITHUB_ENV
+          echo "REPLICAS=${{ inputs.replicas }}" >> $GITHUB_ENV
+
+      - name: Generate final deployment.yml with env vars
+        run: |
+          envsubst < k8s/deployment.yml > k8s/deployment-rendered.yml
+          cat k8s/deployment-rendered.yml
+
+      - name: Setup kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "$KUBECONFIG" > ~/.kube/config
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/deployment-rendered.yml
+          kubectl apply -f k8s/service.yml
+
+      - name: Wait for deployment rollout
+        run: |
+          kubectl rollout status deployment/solo-leveling-telegram --timeout=120s
+
+      - name: Clean up temporary files (security)
+        run: |
+          rm -f settings.xml
+          rm -f k8s/deployment-rendered.yml

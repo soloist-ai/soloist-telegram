@@ -2,6 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.config.grpc
 
 import com.sleepkqq.sololeveling.proto.config.DefaultGrpcClientConfig
 import com.sleepkqq.sololeveling.proto.config.interceptor.UserClientInterceptor
+import com.sleepkqq.sololeveling.proto.player.PlayerServiceGrpc
 import com.sleepkqq.sololeveling.proto.user.UserServiceGrpc
 import io.grpc.ClientInterceptor
 import io.grpc.ManagedChannel
@@ -19,10 +20,15 @@ class GrpcConfigClient(
 	fun playerManagedChannel(): ManagedChannel = createManagedChannel()
 
 	@Bean
-	fun localeClientInterceptor(): ClientInterceptor = UserClientInterceptor()
+	fun userClientInterceptor(): ClientInterceptor = UserClientInterceptor()
 
 	@Bean
 	fun userServiceBlockingStub(): UserServiceGrpc.UserServiceBlockingStub =
 		UserServiceGrpc.newBlockingStub(playerManagedChannel())
-			.withInterceptors(localeClientInterceptor())
+			.withInterceptors(userClientInterceptor())
+
+	@Bean
+	fun playerServiceBlockingStub(): PlayerServiceGrpc.PlayerServiceBlockingStub =
+		PlayerServiceGrpc.newBlockingStub(playerManagedChannel())
+			.withInterceptors(userClientInterceptor())
 }

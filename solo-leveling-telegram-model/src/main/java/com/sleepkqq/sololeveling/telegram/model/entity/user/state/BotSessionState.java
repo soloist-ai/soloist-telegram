@@ -6,6 +6,9 @@ import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.Localized;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.feedback.FeedbackMessageState;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.state.task.DeprecateAllTasksConfirmationState;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.state.task.DeprecateTasksByTopicConfirmationState;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.state.task.DeprecateTasksByTopicState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferAmountState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferConfirmationState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferRecipientState;
@@ -20,7 +23,10 @@ import java.util.Map;
     @JsonSubTypes.Type(value = TransferAmountState.class, name = "TransferAmountState"),
     @JsonSubTypes.Type(value = TransferRecipientState.class, name = "TransferRecipientState"),
     @JsonSubTypes.Type(value = TransferConfirmationState.class, name = "TransferConfirmationState"),
-    @JsonSubTypes.Type(value = FeedbackMessageState.class, name = "FeedbackMessageState")
+    @JsonSubTypes.Type(value = FeedbackMessageState.class, name = "FeedbackMessageState"),
+    @JsonSubTypes.Type(value = DeprecateTasksByTopicConfirmationState.class, name = "DeprecateTasksByTopicConfirmationState"),
+    @JsonSubTypes.Type(value = DeprecateTasksByTopicState.class, name = "DeprecateTasksByTopicState"),
+    @JsonSubTypes.Type(value = DeprecateAllTasksConfirmationState.class, name = "DeprecateAllTasksConfirmationState")
 })
 public interface BotSessionState {
 

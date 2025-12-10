@@ -4,29 +4,32 @@ import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
+import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 
 @Component
-class InterruptCancelCallback(
+class DeprecateAllTasksCancelCallback(
 	private val userSessionService: UserSessionService,
 	private val i18nService: I18nService
 ) : Callback {
 
-	override val action: CallbackAction = CallbackAction.INTERRUPT_CANCEL
+	override val action: CallbackAction = CallbackAction.DEPRECATE_ALL_TASKS_CANCEL
 
+	@PreAuthorize("hasAuthority('DEVELOPER')")
 	override fun handle(callbackQuery: CallbackQuery, session: UserSession): BotApiMethod<*> {
 		val userId = callbackQuery.from.id
 		val messageId = callbackQuery.message.messageId
 
-		userSessionService.cancelInterruptState(userId)
+		userSessionService.idleState(userId)
 
 		return i18nService.editMessageText(
 			userId,
 			messageId,
-			session.state().onEnterLocalized()
+			LocalizationCode.INFO_ACTION_CANCELED
 		)
 	}
 }

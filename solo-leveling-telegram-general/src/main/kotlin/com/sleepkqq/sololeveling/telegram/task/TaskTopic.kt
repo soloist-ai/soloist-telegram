@@ -1,0 +1,16 @@
+package com.sleepkqq.sololeveling.telegram.task
+
+enum class TaskTopic {
+	PHYSICAL_ACTIVITY,
+	CREATIVITY,
+	SOCIAL_SKILLS,
+	NUTRITION,
+	PRODUCTIVITY,
+	ADVENTURE,
+	MUSIC,
+	BRAIN,
+	CYBERSPORT,
+	DEVELOPMENT,
+	READING,
+	LANGUAGE_LEARNING
+}

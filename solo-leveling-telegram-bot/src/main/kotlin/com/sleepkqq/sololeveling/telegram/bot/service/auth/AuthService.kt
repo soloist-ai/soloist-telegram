@@ -3,6 +3,7 @@ package com.sleepkqq.sololeveling.telegram.bot.service.auth
 import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
 import com.sleepkqq.sololeveling.telegram.bot.mapper.ProtoMapper
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserInfoService
+import org.slf4j.LoggerFactory
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -17,10 +18,15 @@ class AuthService(
 	private val protoMapper: ProtoMapper
 ) {
 
-	fun login(update: Update) {
-		val telegramUser = extractTelegramUser(update) ?: return
-		val userId = telegramUser.id
+	private val log = LoggerFactory.getLogger(javaClass)
 
+	fun login(update: Update) {
+		val telegramUser = extractTelegramUser(update) ?: run {
+			log.warn("Auth skipped: cannot extract Telegram user from update: {}", update.updateId)
+			return
+		}
+
+		val userId = telegramUser.id
 		UserContextHolder.setUserId(userId)
 
 		val additionalUserInfo = userInfoService.getUserAdditionalInfo(
@@ -28,12 +34,15 @@ class AuthService(
 			telegramUser.languageCode
 		)
 
-		val user = User("$userId", "", protoMapper.map(additionalUserInfo.rolesList))
-		val auth = UsernamePasswordAuthenticationToken(user, user.password, user.authorities)
+		val roles = protoMapper.map(additionalUserInfo.rolesList)
+		val locale = protoMapper.map(additionalUserInfo.locale)
 
+		val user = User("$userId", "", roles)
+		val auth = UsernamePasswordAuthenticationToken(user, user.password, user.authorities)
 		SecurityContextHolder.getContext().authentication = auth
-		LocaleContextHolder.setLocale(protoMapper.map(additionalUserInfo.locale))
+		LocaleContextHolder.setLocale(locale)
 	}
+
 
 	private fun extractTelegramUser(update: Update): TgUser? = when {
 		update.hasMessage() -> update.message?.from

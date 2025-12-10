@@ -56,4 +56,12 @@ public class UserSessionRepository {
         .set(table.pendingInterruptState(), Expression.nullValue(BotSessionState.class))
         .execute();
   }
+
+  public void updateState(long userId, BotSessionState state) {
+    var table = USER_SESSION_TABLE;
+    sql.createUpdate(table)
+        .where(table.userId().eq(userId))
+        .set(table.state(), state)
+        .execute();
+  }
 }

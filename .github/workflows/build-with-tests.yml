@@ -1,0 +1,45 @@
+name: "Build project with tests"
+
+on:
+  pull_request:
+    branches-ignore: [ ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build project with tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install gettext for envsubst
+        run: |
+          sudo apt-get update && sudo apt-get install -y gettext-base
+
+      - name: Create settings.xml with environment variables
+        run: |
+          cat << 'EOF' > ./settings-template.xml
+          ${{ secrets.MAVEN_SETTINGS_XML }}
+          EOF
+
+          export GITHUB_USER="${{ secrets.GITHUB_USER }}"
+          export PACKAGES_TOKEN="${{ secrets.PACKAGES_TOKEN }}"
+
+          envsubst < ./settings-template.xml > ./settings.xml
+          rm -f ./settings-template.xml
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Build project with Maven
+        run: |
+          mvn clean install -s ./settings.xml
+
+      - name: Clean up temporary files (security)
+        run: |
+          rm -f settings.xml

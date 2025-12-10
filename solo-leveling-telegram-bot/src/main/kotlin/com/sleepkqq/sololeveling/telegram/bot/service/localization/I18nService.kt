@@ -28,11 +28,15 @@ class I18nService(
 		return messageSource.getMessage(code.path, args, LocaleContextHolder.getLocale())
 	}
 
-	private fun buildKeyboard(keyboard: Keyboard, buttonsPerRow: Int = 1): InlineKeyboardMarkup {
+	private fun buildKeyboard(
+		keyboard: Keyboard,
+		buttonsPerRow: Int = keyboard.actions.size
+	): InlineKeyboardMarkup {
 		val buttons = keyboard.actions.map { createButton(it) }
 		val rows = buttons.chunked(buttonsPerRow).map { InlineKeyboardRow(it) }
 		return InlineKeyboardMarkup(rows)
 	}
+
 
 	private fun createButton(callbackAction: CallbackAction): InlineKeyboardButton {
 		return InlineKeyboardButton.builder()
@@ -43,10 +47,22 @@ class I18nService(
 
 	// ============ SendMessage ============
 
-	fun sendMessage(chatId: Long, localized: Localized): SendMessage {
-		val message =
-			SendMessage(chatId, getMessageInternal(localized.localizationCode, localized.params))
-		return localized.keyboard
+	fun sendMessage(
+		chatId: Long,
+		localized: Localized,
+		params: Map<String, Any> = emptyMap(),
+		keyboard: Keyboard? = null
+	): SendMessage {
+
+		val effectiveParams = params.ifEmpty { localized.params }
+		val effectiveKeyboard = keyboard ?: localized.keyboard
+
+		val message = SendMessage(
+			chatId,
+			getMessageInternal(localized.localizationCode, effectiveParams)
+		)
+
+		return effectiveKeyboard
 			?.let { message.withReplyMarkup(buildKeyboard(it)) }
 			?: message
 	}
@@ -54,7 +70,7 @@ class I18nService(
 	fun sendMessage(
 		chatId: Long,
 		code: LocalizationCode,
-		params: Map<String, Any?> = emptyMap(),
+		params: Map<String, Any> = emptyMap(),
 		keyboard: Keyboard? = null
 	): SendMessage {
 		val message = SendMessage(chatId, getMessageInternal(code, params))
@@ -66,14 +82,38 @@ class I18nService(
 	fun editMessageText(
 		chatId: Long,
 		messageId: Int,
-		localized: Localized
+		localized: Localized,
+		params: Map<String, Any> = emptyMap(),
+		keyboard: Keyboard? = null
 	): EditMessageText {
+
+		val effectiveParams = params.ifEmpty { localized.params }
+		val effectiveKeyboard = keyboard ?: localized.keyboard
+
 		val edit = EditMessageText.builder()
 			.chatId(chatId.toString())
 			.messageId(messageId)
-			.text(getMessageInternal(localized.localizationCode, localized.params))
+			.text(getMessageInternal(localized.localizationCode, effectiveParams))
 
-		return localized.keyboard
+		return effectiveKeyboard
+			?.let { edit.replyMarkup(buildKeyboard(it)).build() }
+			?: edit.build()
+	}
+
+	fun editMessageText(
+		chatId: Long,
+		messageId: Int,
+		code: LocalizationCode,
+		params: Map<String, Any> = emptyMap(),
+		keyboard: Keyboard? = null
+	): EditMessageText {
+
+		val edit = EditMessageText.builder()
+			.chatId(chatId.toString())
+			.messageId(messageId)
+			.text(getMessageInternal(code, params))
+
+		return keyboard
 			?.let { edit.replyMarkup(buildKeyboard(it)).build() }
 			?: edit.build()
 	}

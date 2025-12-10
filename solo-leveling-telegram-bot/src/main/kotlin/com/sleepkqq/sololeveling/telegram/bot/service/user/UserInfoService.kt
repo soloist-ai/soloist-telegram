@@ -38,13 +38,13 @@ class UserInfoService(
 			userApi.getUserAdditionalInfo()
 
 		} catch (ex: StatusRuntimeException) {
-			when (ex.status) {
-				Status.NOT_FOUND -> {
+			when (ex.status.code) {
+				Status.Code.NOT_FOUND -> {
 					log.info("User not found in user-api, using Telegram locale for userId={}", userId)
 					additionalInfoResponse(telegramLocaleTag)
 				}
 
-				Status.UNAVAILABLE -> {
+				Status.Code.UNAVAILABLE -> {
 					log.warn("User-api is UNAVAILABLE, using Telegram locale fallback without retries")
 					additionalInfoResponse(telegramLocaleTag)
 				}

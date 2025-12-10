@@ -1,8 +1,6 @@
 package com.sleepkqq.sololeveling.telegram.bot.command.interrupt
 
-import com.sleepkqq.sololeveling.telegram.bot.command.interrupt.InterruptCommand.InterruptCommandResult.StateChanged
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferAmountState
 import org.springframework.context.annotation.Profile
@@ -12,27 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.message.Message
 @Profile("transfer")
 @Component
 class TransferCommand(
-	private val userSessionService: UserSessionService
-) : InterruptCommand {
+	override val userSessionService: UserSessionService
+) : InterruptCommand<TransferAmountState> {
 
 	override val command: String = "/transfer"
-
-	override fun changeState(message: Message, session: UserSession): StateChanged {
-		val newState = TransferAmountState()
-		userSessionService.update(
-			Immutables.createUserSession(session) {
-				it.setState(newState)
-			}
-		)
-
-		return StateChanged(newState)
-	}
-
-	override fun pendingInterruptState(message: Message, session: UserSession) {
-		userSessionService.update(
-			Immutables.createUserSession(session) {
-				it.setPendingInterruptState(TransferAmountState())
-			}
-		)
-	}
+	override fun createState(message: Message, session: UserSession): TransferAmountState =
+		TransferAmountState()
 }

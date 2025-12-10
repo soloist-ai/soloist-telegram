@@ -31,7 +31,7 @@ class CommandHandler(
 				i18nService.sendMessage(message.chatId, result)
 			}
 
-			is InterruptCommand -> {
+			is InterruptCommand<*> -> {
 				val session = userSessionService.find(message.chatId)
 					?: userSessionService.register(message.chatId)
 

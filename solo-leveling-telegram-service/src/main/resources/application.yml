@@ -5,6 +5,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/solo_leveling
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: TelegramHikariCP
   data:
     redis:
       host: localhost
@@ -48,5 +55,13 @@ app:
         user-info:
           ttl: 30m
           nullable: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
 server:
   port: 10005
