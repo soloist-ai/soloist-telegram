@@ -23,6 +23,7 @@ enum class LocalizationCode(val path: String) {
 	// ========== Buttons ==========
 	BUTTON_CONFIRM("button.confirm"),
 	BUTTON_CANCEL("button.cancel"),
+	BUTTON_MINI_APP_LINK("button.mini-app.link"),
 
 	// ========== Errors ===========
 	ERROR_ACCESS_DENIED("error.access-denied"),

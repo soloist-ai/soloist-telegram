@@ -2,12 +2,13 @@ package com.sleepkqq.sololeveling.telegram.bot.service.localization
 
 import com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage
 import com.sleepkqq.sololeveling.telegram.bot.extensions.withReplyMarkup
-import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
+import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction
 import com.sleepkqq.sololeveling.telegram.localization.Localized
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
@@ -18,8 +19,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 @Service
 class I18nService(
-	private val messageSource: MessageSource
+	private val messageSource: MessageSource,
+	private val environment: Environment
 ) {
+
 	private fun getMessageInternal(
 		code: LocalizationCode,
 		params: Map<String, Any?> = emptyMap()
@@ -37,13 +40,22 @@ class I18nService(
 		return InlineKeyboardMarkup(rows)
 	}
 
+	private fun createButton(action: KeyboardAction): InlineKeyboardButton =
+		when (action) {
+			is KeyboardAction.Callback ->
+				InlineKeyboardButton.builder()
+					.text(getMessageInternal(action.callbackAction.localizationCode))
+					.callbackData(action.callbackAction.action)
+					.build()
 
-	private fun createButton(callbackAction: CallbackAction): InlineKeyboardButton {
-		return InlineKeyboardButton.builder()
-			.text(getMessageInternal(callbackAction.localizationCode))
-			.callbackData(callbackAction.action)
-			.build()
-	}
+			is KeyboardAction.Url -> {
+				val url = environment.getRequiredProperty(action.urlProperty)
+				InlineKeyboardButton.builder()
+					.text(getMessageInternal(action.localizationCode))
+					.url(url)
+					.build()
+			}
+		}
 
 	// ============ SendMessage ============
 

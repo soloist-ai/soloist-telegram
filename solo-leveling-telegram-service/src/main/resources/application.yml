@@ -48,12 +48,14 @@ app:
         host: https://solo-leveling-telegram.ru.tuna.am
         path: webbook
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_DEV}
+      mini-app:
+        url: https://t.me/solo_level_bot/app
   cache:
     redis:
       default-ttl: 1h
       caches:
         user-info:
-          ttl: 30m
+          ttl: 10m
           nullable: false
 management:
   endpoints:
