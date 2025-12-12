@@ -12,12 +12,12 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 
 @Component
-class DeprecateTasksByTopicCancelCallback(
+class DeprecateTasksCancelCallback(
 	private val userSessionService: UserSessionService,
 	private val i18nService: I18nService
 ) : Callback {
 
-	override val action: CallbackAction = CallbackAction.DEPRECATE_TASKS_BY_TOPIC_CANCEL
+	override val action: CallbackAction = CallbackAction.DEPRECATE_TASKS_CANCEL
 
 	@PreAuthorize("hasAuthority('DEVELOPER')")
 	override fun handle(callbackQuery: CallbackQuery, session: UserSession): BotApiMethod<*> {

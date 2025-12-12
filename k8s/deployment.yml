@@ -4,6 +4,8 @@ metadata:
   name: solo-leveling-telegram
 spec:
   replicas: ${REPLICAS}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: solo-leveling-telegram
