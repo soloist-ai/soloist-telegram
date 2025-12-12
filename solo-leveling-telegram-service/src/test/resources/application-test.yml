@@ -4,3 +4,4 @@ spring:
 jimmer:
   show-sql: true
   pretty-sql: true
+  default-schema: public

@@ -36,18 +36,13 @@ public class UserFeedbackRepository {
   public UserFeedbackCount getUserFeedbackCount() {
     var f = USER_FEEDBACK_TABLE;
 
-    var userCount = sql.createSubQuery(f)
-        .select(f.userId())
-        .distinct()
-        .count();
-
     var result = sql.createQuery(f)
         .select(UserFeedbackCountMapper
-            .userCount(userCount)
+            .userCount(f.userId().count(true))
             .feedbackCount(f.count())
         )
         .limit(1)
-        .fetchFirstOrNull();
+        .fetchOneOrNull();
 
     return Optional.ofNullable(result)
         .orElseGet(UserFeedbackCount::empty);
