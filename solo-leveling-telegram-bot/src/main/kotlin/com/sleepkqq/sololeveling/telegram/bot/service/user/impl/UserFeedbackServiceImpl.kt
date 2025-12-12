@@ -4,6 +4,7 @@ import com.sleepkqq.sololeveling.telegram.bot.service.user.UserFeedbackService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserService
 import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedback
+import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedbackCount
 import com.sleepkqq.sololeveling.telegram.model.repository.user.UserFeedbackRepository
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.springframework.stereotype.Service
@@ -32,4 +33,8 @@ class UserFeedbackServiceImpl(
 			SaveMode.INSERT_ONLY
 		)
 	}
+
+	@Transactional(readOnly = true)
+	override fun getUserFeedbackCount(): UserFeedbackCount =
+		userFeedbackRepository.getUserFeedbackCount()
 }

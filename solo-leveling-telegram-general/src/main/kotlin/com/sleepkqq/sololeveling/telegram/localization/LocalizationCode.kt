@@ -7,6 +7,7 @@ enum class LocalizationCode(val path: String) {
 	CMD_START("command.start"),
 	CMD_UNKNOWN("command.unknown"),
 	CMD_INTERRUPT("command.interrupt"),
+	CMD_USERS_STATS("command.users-stats"),
 
 	// ========== States ==========
 	STATE_IDLE("state.idle"),
@@ -29,5 +30,5 @@ enum class LocalizationCode(val path: String) {
 	ERROR_ACCESS_DENIED("error.access-denied"),
 
 	// ========== Info ===========
-	INFO_ACTION_CANCELED("info.action.canceled"),
+	INFO_ACTION_CANCELED("info.action.canceled")
 }

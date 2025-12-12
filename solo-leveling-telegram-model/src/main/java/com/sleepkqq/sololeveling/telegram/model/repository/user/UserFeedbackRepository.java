@@ -1,8 +1,11 @@
 package com.sleepkqq.sololeveling.telegram.model.repository.user;
 
 import static com.sleepkqq.sololeveling.telegram.model.entity.user.Tables.USER_FEEDBACK_TABLE;
+import static com.sleepkqq.sololeveling.telegram.model.entity.user.Tables.USER_TABLE;
 
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedback;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedbackCount;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedbackCountMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.babyfish.jimmer.sql.JSqlClient;
@@ -28,5 +31,21 @@ public class UserFeedbackRepository {
         .setMode(saveMode)
         .execute()
         .getModifiedEntity();
+  }
+
+  public UserFeedbackCount getUserFeedbackCount() {
+    var u = USER_TABLE;
+    var f = USER_FEEDBACK_TABLE;
+
+    var userCount = sql.createSubQuery(u)
+        .where(u.asTableEx().feedbacks().count().gt(0L))
+        .selectCount();
+
+    return sql.createQuery(f)
+        .select(UserFeedbackCountMapper
+            .userCount(userCount)
+            .feedbackCount(f.count())
+        )
+        .fetchOne();
   }
 }

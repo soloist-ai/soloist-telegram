@@ -35,6 +35,7 @@ class SecurityConfiguration(
 		"""
 					DEVELOPER > USER
 					MANAGER > USER
+					DEVELOPER > MANAGER
 					ADMIN > DEVELOPER
 					ADMIN > MANAGER
 					""".trimIndent()
