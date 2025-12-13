@@ -47,7 +47,7 @@ class TelegramUpdateInterceptor(
 				UserContextHolder.getUserId(),
 				ex
 			)
-			throw ex
+			return null
 
 		} finally {
 			clearContexts()
