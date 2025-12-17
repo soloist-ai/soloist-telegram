@@ -81,6 +81,13 @@
       <groupId>org.xmlunit</groupId>
       <artifactId>xmlunit-core</artifactId>
     </dependency>
+
+    <!-- utils -->
+    <dependency>
+      <groupId>com.bucket4j</groupId>
+      <artifactId>bucket4j-core</artifactId>
+      <version>${bucket4j.version}</version>
+    </dependency>
   </dependencies>
 
   <build>

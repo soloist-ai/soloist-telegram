@@ -20,6 +20,8 @@ enum class LocalizationCode(val path: String) {
 	STATE_TASKS_DEPRECATE_BY_TOPIC_ENTER("state.tasks.deprecate-by-topic.enter"),
 	STATE_TASKS_DEPRECATE_BY_TOPIC_CONFIRMATION("state.tasks.deprecate-by-topic.confirmation"),
 	STATE_TASKS_DEPRECATE_EXIT("state.tasks.deprecate.exit"),
+	STATE_RESET_PLAYER_ENTER("state.reset.player.enter"),
+	STATE_RESET_PLAYER_EXIT("state.reset.player.exit"),
 
 	// ========== Buttons ==========
 	BUTTON_CONFIRM("button.confirm"),
@@ -30,5 +32,6 @@ enum class LocalizationCode(val path: String) {
 	ERROR_ACCESS_DENIED("error.access-denied"),
 
 	// ========== Info ===========
-	INFO_ACTION_CANCELED("info.action.canceled")
+	INFO_ACTION_CANCELED("info.action.canceled"),
+	INFO_PLAYER_RESET("info.player.reset")
 }

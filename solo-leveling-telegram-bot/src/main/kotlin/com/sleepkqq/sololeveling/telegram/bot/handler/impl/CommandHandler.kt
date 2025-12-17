@@ -35,8 +35,9 @@ class CommandHandler(
 				val session = userSessionService.find(message.chatId)
 					?: userSessionService.register(message.chatId)
 
-				val result = command.handle(message, session)
-				i18nService.sendMessage(message.chatId, result)
+				command.handle(message, session)
+					?.let { i18nService.sendMessage(message.chatId, it) }
+					?: return null
 			}
 
 			else -> null

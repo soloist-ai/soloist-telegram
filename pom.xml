@@ -46,7 +46,7 @@
     <kotlin.code.style>official</kotlin.code.style>
 
     <!-- solo leveling -->
-    <solo-leveling-lib.version>1.4.13</solo-leveling-lib.version>
+    <solo-leveling-lib.version>1.5.5</solo-leveling-lib.version>
 
     <!-- grpc -->
     <spring-grpc.version>0.11.0</spring-grpc.version>
@@ -64,6 +64,7 @@
 
     <!-- utils -->
     <build-helper-plugin.version>3.3.0</build-helper-plugin.version>
+    <bucket4j.version>8.10.1</bucket4j.version>
 
     <!-- tests -->
     <test-containers.version>1.21.3</test-containers.version>

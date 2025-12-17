@@ -15,21 +15,21 @@ interface InterruptCommand<S : BotSessionState> : Command {
 
 	val userSessionService: UserSessionService
 
-	fun createState(message: Message, session: UserSession): S
+	fun createState(message: Message, session: UserSession): S?
 
-	fun handle(message: Message, session: UserSession): InterruptCommandResult<S> =
+	fun handle(message: Message, session: UserSession): InterruptCommandResult<S>? =
 		if (session.state() is IdleState) {
 			changeState(message, session)
 		} else {
 			pendingInterruptState(message, session)
-			InterruptCommandResult.Question()
 		}
 
 	fun changeState(
 		message: Message,
 		session: UserSession
-	): InterruptCommandResult.StateChanged<S> {
+	): InterruptCommandResult.StateChanged<S>? {
 		val newState = createState(message, session)
+			?: return null
 
 		userSessionService.update(
 			Immutables.createUserSession(session) {
@@ -40,14 +40,20 @@ interface InterruptCommand<S : BotSessionState> : Command {
 		return InterruptCommandResult.StateChanged(newState)
 	}
 
-	fun pendingInterruptState(message: Message, session: UserSession) {
+	fun pendingInterruptState(
+		message: Message,
+		session: UserSession
+	): InterruptCommandResult.Question? {
 		val pendingState = createState(message, session)
+			?: return null
 
 		userSessionService.update(
 			Immutables.createUserSession(session) {
 				it.setPendingInterruptState(pendingState)
 			}
 		)
+
+		return InterruptCommandResult.Question()
 	}
 
 	sealed class InterruptCommandResult<out S : BotSessionState> : Localized {

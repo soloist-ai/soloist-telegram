@@ -18,13 +18,19 @@ enum class Keyboard(
 	DEPRECATE_ALL_TASKS_CONFIRMATION(
 		listOf(
 			Callback(CallbackAction.DEPRECATE_ALL_TASKS_CONFIRM),
-			Callback(CallbackAction.DEPRECATE_TASKS_CANCEL)
+			Callback(CallbackAction.IDLE_CANCEL)
 		)
 	),
 	DEPRECATE_TASKS_BY_TOPIC_CONFIRMATION(
 		listOf(
 			Callback(CallbackAction.DEPRECATE_TASKS_BY_TOPIC_CONFIRM),
-			Callback(CallbackAction.DEPRECATE_TASKS_CANCEL)
+			Callback(CallbackAction.IDLE_CANCEL)
+		)
+	),
+	RESET_PLAYER_CONFIRMATION(
+		listOf(
+			Callback(CallbackAction.RESET_PLAYER_CONFIRM),
+			Callback(CallbackAction.IDLE_CANCEL)
 		)
 	),
 	MINI_APP_LINK(

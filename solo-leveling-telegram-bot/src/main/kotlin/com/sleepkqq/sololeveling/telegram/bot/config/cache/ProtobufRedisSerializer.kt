@@ -17,6 +17,7 @@ class ProtobufRedisSerializer<T : MessageLite>(
 		return try {
 			@Suppress("UNCHECKED_CAST")
 			defaultInstance.parserForType.parseFrom(bytes) as T
+
 		} catch (ex: Exception) {
 			throw SerializationException("Error deserializing protobuf message", ex)
 		}

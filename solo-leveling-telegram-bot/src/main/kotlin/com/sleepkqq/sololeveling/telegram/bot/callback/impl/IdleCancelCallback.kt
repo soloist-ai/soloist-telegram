@@ -6,20 +6,18 @@ import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 
 @Component
-class DeprecateTasksCancelCallback(
+class IdleCancelCallback(
 	private val userSessionService: UserSessionService,
 	private val i18nService: I18nService
 ) : Callback {
 
-	override val action: CallbackAction = CallbackAction.DEPRECATE_TASKS_CANCEL
+	override val action: CallbackAction = CallbackAction.IDLE_CANCEL
 
-	@PreAuthorize("hasAuthority('DEVELOPER')")
 	override fun handle(callbackQuery: CallbackQuery, session: UserSession): BotApiMethod<*> {
 		val userId = callbackQuery.from.id
 		val messageId = callbackQuery.message.messageId

@@ -67,6 +67,3 @@ management:
       application: ${spring.application.name}
 server:
   port: 10005
-logging:
-  level:
-    org.springframework.web.servlet.mvc.method.annotation.DefaultHandlerExceptionResolver: ERROR

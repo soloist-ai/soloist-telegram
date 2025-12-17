@@ -31,7 +31,7 @@ class UserInfoService(
 	)
 	fun getUserAdditionalInfo(
 		userId: Long,
-		telegramLocaleTag: String?
+		telegramLocaleTag: String? = null
 	): GetUserAdditionalInfoResponse {
 		return try {
 

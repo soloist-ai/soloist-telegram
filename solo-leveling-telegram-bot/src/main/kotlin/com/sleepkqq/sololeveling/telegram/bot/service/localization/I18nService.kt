@@ -2,6 +2,8 @@ package com.sleepkqq.sololeveling.telegram.bot.service.localization
 
 import com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage
 import com.sleepkqq.sololeveling.telegram.bot.extensions.withReplyMarkup
+import com.sleepkqq.sololeveling.telegram.bot.service.image.ImageResourceService
+import com.sleepkqq.sololeveling.telegram.image.Image
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction
 import com.sleepkqq.sololeveling.telegram.localization.Localized
@@ -11,47 +13,67 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText
+import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
+import java.util.*
 
 @Service
 class I18nService(
 	private val messageSource: MessageSource,
-	private val environment: Environment
+	private val environment: Environment,
+	private val imageResourceService: ImageResourceService
 ) {
+
+	private companion object {
+		const val HTML_MODE = "HTML"
+	}
 
 	private fun getMessageInternal(
 		code: LocalizationCode,
-		params: Map<String, Any?> = emptyMap()
+		params: Map<String, Any> = emptyMap(),
+		locale: Locale? = null
 	): String {
-		val args = if (params.isEmpty()) null else params.values.toTypedArray()
-		return messageSource.getMessage(code.path, args, LocaleContextHolder.getLocale())
+		val effectiveLocale = locale ?: LocaleContextHolder.getLocale()
+
+		if (params.isEmpty()) {
+			return messageSource.getMessage(code.path, null, effectiveLocale)
+		}
+
+		val sortedArgs = params.entries
+			.sortedBy { it.key }
+			.map { it.value }
+			.toTypedArray()
+
+		return messageSource.getMessage(code.path, sortedArgs, effectiveLocale)
 	}
 
 	private fun buildKeyboard(
 		keyboard: Keyboard,
-		buttonsPerRow: Int = keyboard.actions.size
+		buttonsPerRow: Int = keyboard.actions.size,
+		locale: Locale? = null
 	): InlineKeyboardMarkup {
-		val buttons = keyboard.actions.map { createButton(it) }
+		val buttons = keyboard.actions.map { createButton(it, locale) }
 		val rows = buttons.chunked(buttonsPerRow).map { InlineKeyboardRow(it) }
 		return InlineKeyboardMarkup(rows)
 	}
 
-	private fun createButton(action: KeyboardAction): InlineKeyboardButton =
+	private fun createButton(action: KeyboardAction, locale: Locale? = null): InlineKeyboardButton =
 		when (action) {
 			is KeyboardAction.Callback ->
 				InlineKeyboardButton.builder()
-					.text(getMessageInternal(action.callbackAction.localizationCode))
+					.text(getMessageInternal(action.callbackAction.localizationCode, locale = locale))
 					.callbackData(action.callbackAction.action)
 					.build()
 
 			is KeyboardAction.Url -> {
 				val url = environment.getRequiredProperty(action.urlProperty)
 				InlineKeyboardButton.builder()
-					.text(getMessageInternal(action.localizationCode))
+					.text(getMessageInternal(action.localizationCode, locale = locale))
 					.url(url)
 					.build()
 			}
@@ -63,19 +85,18 @@ class I18nService(
 		chatId: Long,
 		localized: Localized,
 		params: Map<String, Any> = emptyMap(),
-		keyboard: Keyboard? = null
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
 	): SendMessage {
-
 		val effectiveParams = params.ifEmpty { localized.params }
 		val effectiveKeyboard = keyboard ?: localized.keyboard
-
 		val message = SendMessage(
 			chatId,
-			getMessageInternal(localized.localizationCode, effectiveParams)
+			getMessageInternal(localized.localizationCode, effectiveParams, locale)
 		)
 
 		return effectiveKeyboard
-			?.let { message.withReplyMarkup(buildKeyboard(it)) }
+			?.let { message.withReplyMarkup(buildKeyboard(it, locale = locale)) }
 			?: message
 	}
 
@@ -83,10 +104,57 @@ class I18nService(
 		chatId: Long,
 		code: LocalizationCode,
 		params: Map<String, Any> = emptyMap(),
-		keyboard: Keyboard? = null
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
 	): SendMessage {
-		val message = SendMessage(chatId, getMessageInternal(code, params))
-		return keyboard?.let { message.withReplyMarkup(buildKeyboard(it)) } ?: message
+		val message = SendMessage(chatId, getMessageInternal(code, params, locale))
+		return keyboard?.let { message.withReplyMarkup(buildKeyboard(it, locale = locale)) } ?: message
+	}
+
+	// ============ SendPhoto ============
+
+	fun sendPhoto(
+		chatId: Long,
+		image: Image,
+		localized: Localized,
+		params: Map<String, Any> = emptyMap(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendPhoto {
+		val effectiveParams = params.ifEmpty { localized.params }
+		val effectiveKeyboard = keyboard ?: localized.keyboard
+		val photoStream = imageResourceService.getPhotoStream(image)
+
+		val sendPhoto = SendPhoto.builder()
+			.chatId(chatId.toString())
+			.photo(InputFile(photoStream, image.fileName))
+			.caption(getMessageInternal(localized.localizationCode, effectiveParams, locale))
+			.parseMode(HTML_MODE)
+
+		return effectiveKeyboard
+			?.let { sendPhoto.replyMarkup(buildKeyboard(it, locale = locale)).build() }
+			?: sendPhoto.build()
+	}
+
+	fun sendPhoto(
+		chatId: Long,
+		image: Image,
+		code: LocalizationCode,
+		params: Map<String, Any> = emptyMap(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendPhoto {
+		val photoStream = imageResourceService.getPhotoStream(image)
+
+		val sendPhoto = SendPhoto.builder()
+			.chatId(chatId.toString())
+			.photo(InputFile(photoStream, image.fileName))
+			.caption(getMessageInternal(code, params, locale))
+			.parseMode(HTML_MODE)
+
+		return keyboard
+			?.let { sendPhoto.replyMarkup(buildKeyboard(it, locale = locale)).build() }
+			?: sendPhoto.build()
 	}
 
 	// ============ EditMessageText ============
@@ -96,19 +164,18 @@ class I18nService(
 		messageId: Int,
 		localized: Localized,
 		params: Map<String, Any> = emptyMap(),
-		keyboard: Keyboard? = null
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
 	): EditMessageText {
-
 		val effectiveParams = params.ifEmpty { localized.params }
 		val effectiveKeyboard = keyboard ?: localized.keyboard
-
 		val edit = EditMessageText.builder()
 			.chatId(chatId.toString())
 			.messageId(messageId)
-			.text(getMessageInternal(localized.localizationCode, effectiveParams))
+			.text(getMessageInternal(localized.localizationCode, effectiveParams, locale))
 
 		return effectiveKeyboard
-			?.let { edit.replyMarkup(buildKeyboard(it)).build() }
+			?.let { edit.replyMarkup(buildKeyboard(it, locale = locale)).build() }
 			?: edit.build()
 	}
 
@@ -117,16 +184,16 @@ class I18nService(
 		messageId: Int,
 		code: LocalizationCode,
 		params: Map<String, Any> = emptyMap(),
-		keyboard: Keyboard? = null
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
 	): EditMessageText {
-
 		val edit = EditMessageText.builder()
 			.chatId(chatId.toString())
 			.messageId(messageId)
-			.text(getMessageInternal(code, params))
+			.text(getMessageInternal(code, params, locale))
 
 		return keyboard
-			?.let { edit.replyMarkup(buildKeyboard(it)).build() }
+			?.let { edit.replyMarkup(buildKeyboard(it, locale = locale)).build() }
 			?: edit.build()
 	}
 

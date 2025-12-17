@@ -32,7 +32,7 @@ class TelegramUpdateInterceptor(
 
 			log.info("Processing telegram updateId={}, userId={}", update.updateId, userId)
 
-			return pjp.proceed() as BotApiMethod<*>?
+			return pjp.proceed() as? BotApiMethod<*>
 
 		} catch (e: AuthorizationDeniedException) {
 			val userId = UserContextHolder.getUserId()!!
@@ -43,9 +43,7 @@ class TelegramUpdateInterceptor(
 		} catch (ex: Exception) {
 			log.error(
 				"Error processing telegram updateId={}, userId={}",
-				update.updateId,
-				UserContextHolder.getUserId(),
-				ex
+				update.updateId, UserContextHolder.getUserId(), ex
 			)
 			return null
 

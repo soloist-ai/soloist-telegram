@@ -18,16 +18,16 @@ public record TransferConfirmationState(long amount, String recipientUsername)
   @Override
   public Map<String, Object> onEnterMessageParams() {
     return Map.of(
-        "amount", amount,
-        "recipient", recipientUsername
+        "0", amount,
+        "1", recipientUsername
     );
   }
 
   @Override
   public Map<String, Object> onExitMessageParams() {
     return Map.of(
-        "amount", amount,
-        "recipient", recipientUsername
+        "0", amount,
+        "1", recipientUsername
     );
   }
 }

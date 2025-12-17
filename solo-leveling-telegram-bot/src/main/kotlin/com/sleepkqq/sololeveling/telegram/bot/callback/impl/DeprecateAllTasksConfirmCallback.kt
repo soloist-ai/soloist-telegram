@@ -33,7 +33,7 @@ class DeprecateAllTasksConfirmCallback(
 			userId,
 			messageId,
 			session.state().onExitLocalized()!!,
-			mapOf("effectedRows" to effectedRows),
+			mapOf("0" to effectedRows),
 		)
 	}
 }

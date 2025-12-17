@@ -14,14 +14,13 @@ class DeprecateAllTasksCommand(
 ) : InterruptCommand<DeprecateAllTasksConfirmationState> {
 
 	override val command: String = "/deprecate_all_tasks"
-
 	override val forList: Boolean = false
 
 	@PreAuthorize("hasAuthority('DEVELOPER')")
 	override fun handle(
 		message: Message,
 		session: UserSession
-	): InterruptCommandResult<DeprecateAllTasksConfirmationState> = super.handle(message, session)
+	): InterruptCommandResult<DeprecateAllTasksConfirmationState>? = super.handle(message, session)
 
 	override fun createState(
 		message: Message,

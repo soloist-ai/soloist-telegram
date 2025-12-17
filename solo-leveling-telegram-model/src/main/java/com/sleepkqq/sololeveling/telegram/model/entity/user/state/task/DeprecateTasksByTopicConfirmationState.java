@@ -18,7 +18,7 @@ public record DeprecateTasksByTopicConfirmationState(TaskTopic taskTopic)
 
   @Override
   public Map<String, Object> onEnterMessageParams() {
-    return Map.of("taskTopic", taskTopic);
+    return Map.of("0", taskTopic);
   }
 
   @Override
