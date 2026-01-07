@@ -35,7 +35,7 @@ class I18nService(
 
 	private fun getMessageInternal(
 		code: LocalizationCode,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = listOf(),
 		locale: Locale? = null
 	): String {
 		val effectiveLocale = locale ?: LocaleContextHolder.getLocale()
@@ -44,12 +44,8 @@ class I18nService(
 			return messageSource.getMessage(code.path, null, effectiveLocale)
 		}
 
-		val sortedArgs = params.entries
-			.sortedBy { it.key }
-			.map { it.value }
-			.toTypedArray()
-
-		return messageSource.getMessage(code.path, sortedArgs, effectiveLocale)
+		val args = params.toTypedArray()
+		return messageSource.getMessage(code.path, args, effectiveLocale)
 	}
 
 	private fun buildKeyboard(
@@ -84,12 +80,13 @@ class I18nService(
 	fun sendMessage(
 		chatId: Long,
 		localized: Localized,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = emptyList(),
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): SendMessage {
 		val effectiveParams = params.ifEmpty { localized.params }
 		val effectiveKeyboard = keyboard ?: localized.keyboard
+
 		val message = SendMessage(
 			chatId,
 			getMessageInternal(localized.localizationCode, effectiveParams, locale)
@@ -103,7 +100,7 @@ class I18nService(
 	fun sendMessage(
 		chatId: Long,
 		code: LocalizationCode,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = emptyList(),
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): SendMessage {
@@ -117,14 +114,14 @@ class I18nService(
 		chatId: Long,
 		image: Image,
 		localized: Localized,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = emptyList(),
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): SendPhoto {
 		val effectiveParams = params.ifEmpty { localized.params }
 		val effectiveKeyboard = keyboard ?: localized.keyboard
-		val photoStream = imageResourceService.getPhotoStream(image)
 
+		val photoStream = imageResourceService.getPhotoStream(image)
 		val sendPhoto = SendPhoto.builder()
 			.chatId(chatId.toString())
 			.photo(InputFile(photoStream, image.fileName))
@@ -140,12 +137,11 @@ class I18nService(
 		chatId: Long,
 		image: Image,
 		code: LocalizationCode,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = emptyList(),
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): SendPhoto {
 		val photoStream = imageResourceService.getPhotoStream(image)
-
 		val sendPhoto = SendPhoto.builder()
 			.chatId(chatId.toString())
 			.photo(InputFile(photoStream, image.fileName))
@@ -163,12 +159,13 @@ class I18nService(
 		chatId: Long,
 		messageId: Int,
 		localized: Localized,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = emptyList(),
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): EditMessageText {
 		val effectiveParams = params.ifEmpty { localized.params }
 		val effectiveKeyboard = keyboard ?: localized.keyboard
+
 		val edit = EditMessageText.builder()
 			.chatId(chatId.toString())
 			.messageId(messageId)
@@ -183,7 +180,7 @@ class I18nService(
 		chatId: Long,
 		messageId: Int,
 		code: LocalizationCode,
-		params: Map<String, Any> = emptyMap(),
+		params: List<Any> = emptyList(),
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): EditMessageText {

@@ -69,7 +69,7 @@ interface InterruptCommand<S : BotSessionState> : Command {
 			override val localizationCode: LocalizationCode
 				get() = botSessionState.onEnterMessageCode()
 
-			override val params: Map<String, Any>
+			override val params: List<Any>
 				get() = botSessionState.onEnterMessageParams()
 
 			override val keyboard: Keyboard?

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
-import java.util.Map;
+import java.util.List;
 
 @JsonTypeName("ResetPlayerConfirmationState")
 public record ResetPlayerConfirmationState(
@@ -20,13 +20,8 @@ public record ResetPlayerConfirmationState(
   }
 
   @Override
-  public Map<String, Object> onEnterMessageParams() {
-    return Map.of(
-        "0", id,
-        "1", username != null ? username : "N/A",
-        "2", firstName != null ? firstName : "N/A",
-        "3", lastName != null ? lastName : "N/A"
-    );
+  public List<Object> onEnterMessageParams() {
+    return List.of(id, username, firstName, lastName);
   }
 
   @Override
@@ -40,12 +35,7 @@ public record ResetPlayerConfirmationState(
   }
 
   @Override
-  public Map<String, Object> onExitMessageParams() {
-    return Map.of(
-        "0", id,
-        "1", username != null ? username : "N/A",
-        "2", firstName != null ? firstName : "N/A",
-        "3", lastName != null ? lastName : "N/A"
-    );
+  public List<Object> onExitMessageParams() {
+    return List.of(id, username, firstName, lastName);
   }
 }

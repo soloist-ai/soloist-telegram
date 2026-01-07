@@ -12,7 +12,7 @@ interface InfoCommand : Command {
 
 	data class InfoCommandResult(
 		override val localizationCode: LocalizationCode,
-		override val params: Map<String, Any> = emptyMap(),
+		override val params: List<Any> = emptyList(),
 		override val keyboard: Keyboard? = null
 	) : Localized
 }

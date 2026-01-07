@@ -24,20 +24,20 @@ class UsersStatsCommand(
 
 		val feedbackCount = userFeedbackService.getUserFeedbackCount()
 
-		val params = mapOf(
-			"total" to usersStats.total,
-			"returning" to usersStats.returning,
-			"todayTotal" to usersStats.todayTotal,
-			"todayReturning" to usersStats.todayReturning,
-			"todayNew" to usersStats.todayNew,
-			"weekTotal" to usersStats.weekTotal,
-			"weekReturning" to usersStats.weekReturning,
-			"weekNew" to usersStats.weekNew,
-			"monthTotal" to usersStats.monthTotal,
-			"monthReturning" to usersStats.monthReturning,
-			"monthNew" to usersStats.monthNew,
-			"userFeedbackCount" to feedbackCount.userCount,
-			"feedbackCount" to feedbackCount.feedbackCount,
+		val params = listOf(
+			usersStats.total,
+			usersStats.returning,
+			usersStats.todayTotal,
+			usersStats.todayReturning,
+			usersStats.todayNew,
+			usersStats.weekTotal,
+			usersStats.weekReturning,
+			usersStats.weekNew,
+			usersStats.monthTotal,
+			usersStats.monthReturning,
+			usersStats.monthNew,
+			feedbackCount.userCount,
+			feedbackCount.feedbackCount,
 		)
 
 		return InfoCommandResult(LocalizationCode.CMD_USERS_STATS, params)

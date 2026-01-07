@@ -13,10 +13,9 @@ import com.sleepkqq.sololeveling.telegram.model.entity.user.state.task.Deprecate
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferAmountState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferConfirmationState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.transfer.TransferRecipientState;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -46,7 +45,7 @@ public interface BotSessionState {
 
       @NotNull
       @Override
-      public Map<String, Object> getParams() {
+      public List<Object> getParams() {
         return self.onEnterMessageParams();
       }
 
@@ -78,7 +77,7 @@ public interface BotSessionState {
 
       @NotNull
       @Override
-      public Map<String, Object> getParams() {
+      public List<Object> getParams() {
         return self.onExitMessageParams();
       }
     };
@@ -92,8 +91,8 @@ public interface BotSessionState {
   /**
    * Параметры для сообщения при входе
    */
-  default Map<String, Object> onEnterMessageParams() {
-    return Map.of();
+  default List<Object> onEnterMessageParams() {
+    return List.of();
   }
 
   /**
@@ -117,8 +116,8 @@ public interface BotSessionState {
   /**
    * Параметры для сообщения при выходе
    */
-  default Map<String, Object> onExitMessageParams() {
-    return Map.of();
+  default List<Object> onExitMessageParams() {
+    return List.of();
   }
 
   /**

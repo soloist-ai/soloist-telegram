@@ -6,8 +6,8 @@ interface Localized {
 
 	val localizationCode: LocalizationCode
 
-	val params: Map<String, Any>
-		get() = emptyMap()
+	val params: List<Any>
+		get() = emptyList()
 
 	val keyboard: Keyboard?
 		get() = null

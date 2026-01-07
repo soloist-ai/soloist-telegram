@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 
-import java.util.Map;
+import java.util.List;
 
 @JsonTypeName("TransferConfirmationState")
 public record TransferConfirmationState(long amount, String recipientUsername)
@@ -16,18 +16,12 @@ public record TransferConfirmationState(long amount, String recipientUsername)
   }
 
   @Override
-  public Map<String, Object> onEnterMessageParams() {
-    return Map.of(
-        "0", amount,
-        "1", recipientUsername
-    );
+  public List<Object> onEnterMessageParams() {
+    return List.of(amount, recipientUsername);
   }
 
   @Override
-  public Map<String, Object> onExitMessageParams() {
-    return Map.of(
-        "0", amount,
-        "1", recipientUsername
-    );
+  public List<Object> onExitMessageParams() {
+    return List.of(amount, recipientUsername);
   }
 }

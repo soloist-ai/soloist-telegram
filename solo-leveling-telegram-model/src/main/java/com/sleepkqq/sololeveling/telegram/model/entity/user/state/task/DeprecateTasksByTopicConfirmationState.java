@@ -5,7 +5,7 @@ import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 import com.sleepkqq.sololeveling.telegram.task.TaskTopic;
-import java.util.Map;
+import java.util.List;
 
 @JsonTypeName("DeprecateTasksByTopicConfirmationState")
 public record DeprecateTasksByTopicConfirmationState(TaskTopic taskTopic)
@@ -17,8 +17,8 @@ public record DeprecateTasksByTopicConfirmationState(TaskTopic taskTopic)
   }
 
   @Override
-  public Map<String, Object> onEnterMessageParams() {
-    return Map.of("0", taskTopic);
+  public List<Object> onEnterMessageParams() {
+    return List.of(taskTopic);
   }
 
   @Override
