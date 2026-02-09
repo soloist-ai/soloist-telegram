@@ -14,7 +14,7 @@ app:
     bot:
       token: ${TELEGRAM_BOT_TOKEN_APP}
       webhook:
-        host: https://telegram.solo-leveling.online
+        host: https://telegram.solo-leveling.org
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_APP}
 server:
   port: 8080

@@ -38,7 +38,7 @@ class DeprecateTasksByTopicConfirmCallback(
 		return i18nService.editMessageText(
 			userId,
 			messageId,
-			session.state().onExitLocalized()!!,
+			state.onExitLocalized()!!,
 			listOf(effectedRows)
 		)
 	}
