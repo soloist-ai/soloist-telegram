@@ -1,6 +1,6 @@
 package com.sleepkqq.sololeveling.telegram.model.repository.user;
 
-import static com.sleepkqq.sololeveling.telegram.model.entity.user.Tables.USER_FEEDBACK_TABLE;
+import static com.sleepkqq.sololeveling.telegram.model.entity.Tables.USER_FEEDBACK_TABLE;
 
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedback;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedbackCount;

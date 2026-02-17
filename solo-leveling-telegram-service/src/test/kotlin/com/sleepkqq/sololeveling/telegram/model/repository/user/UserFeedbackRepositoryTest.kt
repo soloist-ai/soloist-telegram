@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.model.repository.user
 
 import com.sleepkqq.sololeveling.telegram.BaseTestClass
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserService
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
+import com.sleepkqq.sololeveling.telegram.model.entity.Immutables
 import org.assertj.core.api.Assertions.assertThat
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.junit.jupiter.api.Test

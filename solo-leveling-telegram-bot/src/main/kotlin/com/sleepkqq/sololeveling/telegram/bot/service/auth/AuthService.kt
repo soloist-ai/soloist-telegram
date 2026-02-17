@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.service.auth
 
 import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
 import com.sleepkqq.sololeveling.telegram.bot.mapper.ProtoMapper
-import com.sleepkqq.sololeveling.telegram.bot.service.user.UserInfoService
+import com.sleepkqq.sololeveling.telegram.bot.service.user.impl.UserInfoService
 import org.slf4j.LoggerFactory
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

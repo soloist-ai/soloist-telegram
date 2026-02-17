@@ -33,6 +33,12 @@ enum class Keyboard(
 			Callback(CallbackAction.IDLE_CANCEL)
 		)
 	),
+	SEND_NEWSLETTER_CONFIRMATION(
+		listOf(
+			Callback(CallbackAction.SEND_NEWSLETTER_CONFIRM),
+			Callback(CallbackAction.IDLE_CANCEL)
+		)
+	),
 	MINI_APP_LINK(
 		listOf(
 			Url(LocalizationCode.BUTTON_MINI_APP_LINK, "app.telegram.bot.mini-app.url")

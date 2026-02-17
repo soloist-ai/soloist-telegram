@@ -14,7 +14,7 @@ class DeprecateTasksByTopicCommand(
 ) : InterruptCommand<DeprecateTasksByTopicState> {
 
 	override val command: String = "/deprecate_tasks_by_topic"
-	override val forList: Boolean = false
+	override val visible: Boolean = false
 
 	@PreAuthorize("hasAuthority('DEVELOPER')")
 	override fun handle(

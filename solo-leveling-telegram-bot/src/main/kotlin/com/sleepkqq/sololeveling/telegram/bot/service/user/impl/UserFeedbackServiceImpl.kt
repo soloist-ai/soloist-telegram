@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.service.user.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserFeedbackService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserService
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
+import com.sleepkqq.sololeveling.telegram.model.entity.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedback
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserFeedbackCount
 import com.sleepkqq.sololeveling.telegram.model.repository.user.UserFeedbackRepository

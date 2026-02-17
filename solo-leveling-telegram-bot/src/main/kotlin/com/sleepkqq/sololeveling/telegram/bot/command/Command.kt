@@ -4,7 +4,7 @@ interface Command {
 
 	val command: String
 
-	val forList: Boolean
+	val visible: Boolean
 
 	val description: String
 		get() = ""

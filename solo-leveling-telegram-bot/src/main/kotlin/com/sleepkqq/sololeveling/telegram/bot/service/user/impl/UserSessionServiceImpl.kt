@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.service.user.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
+import com.sleepkqq.sololeveling.telegram.model.entity.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSessionFetcher
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.IdleState

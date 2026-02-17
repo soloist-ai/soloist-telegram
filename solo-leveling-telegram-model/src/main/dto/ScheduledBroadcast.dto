@@ -1,0 +1,10 @@
+export com.sleepkqq.sololeveling.telegram.model.entity.broadcast.ScheduledBroadcast
+  -> package com.sleepkqq.sololeveling.telegram.model.entity.broadcast.dto
+
+ScheduledBroadcastView {
+  #allScalars
+
+  messages {
+    #allScalars
+  }
+}

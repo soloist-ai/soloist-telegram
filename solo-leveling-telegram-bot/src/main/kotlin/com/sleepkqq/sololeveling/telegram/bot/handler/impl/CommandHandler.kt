@@ -4,7 +4,7 @@ import com.sleepkqq.sololeveling.telegram.bot.command.Command
 import com.sleepkqq.sololeveling.telegram.bot.command.info.InfoCommand
 import com.sleepkqq.sololeveling.telegram.bot.command.interrupt.InterruptCommand
 import com.sleepkqq.sololeveling.telegram.bot.handler.MessageHandler
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.springframework.stereotype.Component

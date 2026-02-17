@@ -1,6 +1,6 @@
 package com.sleepkqq.sololeveling.telegram.model.repository.user;
 
-import static com.sleepkqq.sololeveling.telegram.model.entity.user.Tables.USER_SESSION_TABLE;
+import static com.sleepkqq.sololeveling.telegram.model.entity.Tables.USER_SESSION_TABLE;
 
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSessionFetcher;

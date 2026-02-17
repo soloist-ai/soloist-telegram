@@ -5,7 +5,7 @@ import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import com.sleepkqq.sololeveling.telegram.localization.Localized
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
+import com.sleepkqq.sololeveling.telegram.model.entity.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.IdleState

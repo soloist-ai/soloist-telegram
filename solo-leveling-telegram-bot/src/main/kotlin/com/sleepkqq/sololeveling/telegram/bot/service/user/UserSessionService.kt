@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.user
 
 import com.sleepkqq.sololeveling.telegram.bot.exception.ModelNotFoundException
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Fetchers
+import com.sleepkqq.sololeveling.telegram.model.entity.Fetchers
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSessionFetcher
 

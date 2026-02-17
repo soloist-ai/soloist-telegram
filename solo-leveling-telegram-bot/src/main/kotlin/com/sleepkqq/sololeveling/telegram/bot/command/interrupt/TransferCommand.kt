@@ -14,7 +14,7 @@ class TransferCommand(
 ) : InterruptCommand<TransferAmountState> {
 
 	override val command: String = "/transfer"
-	override val forList: Boolean = false
+	override val visible: Boolean = false
 
 	override fun createState(message: Message, session: UserSession): TransferAmountState =
 		TransferAmountState()

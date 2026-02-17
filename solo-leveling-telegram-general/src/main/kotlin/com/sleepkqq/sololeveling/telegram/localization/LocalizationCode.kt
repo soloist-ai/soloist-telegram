@@ -20,8 +20,12 @@ enum class LocalizationCode(val path: String) {
 	STATE_TASKS_DEPRECATE_BY_TOPIC_ENTER("state.tasks.deprecate-by-topic.enter"),
 	STATE_TASKS_DEPRECATE_BY_TOPIC_CONFIRMATION("state.tasks.deprecate-by-topic.confirmation"),
 	STATE_TASKS_DEPRECATE_EXIT("state.tasks.deprecate.exit"),
-	STATE_RESET_PLAYER_ENTER("state.reset.player.enter"),
+	STATE_RESET_PLAYER_CONFIRMATION("state.reset.player.enter"),
 	STATE_RESET_PLAYER_EXIT("state.reset.player.exit"),
+	STATE_NEWSLETTER_MESSAGE_ENTER("state.newsletter.message.enter"),
+	STATE_NEWSLETTER_DATE_TIME_ENTER("state.newsletter.date-time.enter"),
+	STATE_NEWSLETTER_CONFIRMATION("state.newsletter.confirmation"),
+	STATE_NEWSLETTER_EXIT("state.newsletter.exit"),
 
 	// ========== Buttons ==========
 	BUTTON_CONFIRM("button.confirm"),

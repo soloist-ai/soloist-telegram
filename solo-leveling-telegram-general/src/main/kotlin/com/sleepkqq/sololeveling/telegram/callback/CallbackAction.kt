@@ -15,5 +15,6 @@ enum class CallbackAction(
 		LocalizationCode.BUTTON_CONFIRM
 	),
 	IDLE_CANCEL("idle_cancel", LocalizationCode.BUTTON_CANCEL),
-	RESET_PLAYER_CONFIRM("reset_player_confirm", LocalizationCode.BUTTON_CONFIRM)
+	RESET_PLAYER_CONFIRM("reset_player_confirm", LocalizationCode.BUTTON_CONFIRM),
+	SEND_NEWSLETTER_CONFIRM("send_newsletter_confirm", LocalizationCode.BUTTON_CONFIRM)
 }

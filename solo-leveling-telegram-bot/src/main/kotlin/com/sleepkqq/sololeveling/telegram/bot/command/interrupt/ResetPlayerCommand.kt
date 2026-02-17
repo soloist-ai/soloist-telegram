@@ -18,7 +18,7 @@ class ResetPlayerCommand(
 ) : InterruptCommand<ResetPlayerConfirmationState> {
 
 	override val command: String = "/reset_player"
-	override val forList: Boolean = false
+	override val visible: Boolean = false
 
 	private val log = LoggerFactory.getLogger(javaClass)
 

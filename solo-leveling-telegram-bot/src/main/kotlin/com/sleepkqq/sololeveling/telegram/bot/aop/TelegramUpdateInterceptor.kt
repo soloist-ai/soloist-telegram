@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.aop
 
 import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
 import com.sleepkqq.sololeveling.telegram.bot.service.auth.AuthService
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around

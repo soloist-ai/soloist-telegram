@@ -69,7 +69,7 @@ class TelegramBotConfig(
 	}
 
 	private fun registerCommands() {
-		val commands = commands.filter { it.forList }
+		val commands = commands.filter { it.visible }
 			.map { BotCommand(it.command, it.description) }
 
 		val request = SetMyCommands.builder()

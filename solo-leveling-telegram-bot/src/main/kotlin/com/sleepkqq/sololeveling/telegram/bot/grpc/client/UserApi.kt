@@ -1,9 +1,12 @@
 package com.sleepkqq.sololeveling.telegram.bot.grpc.client
 
 import com.google.protobuf.Empty
+import com.sleepkqq.sololeveling.proto.player.RequestPaging
 import com.sleepkqq.sololeveling.proto.user.GetUserAdditionalInfoResponse
 import com.sleepkqq.sololeveling.proto.user.GetUserRequest
 import com.sleepkqq.sololeveling.proto.user.GetUserResponse
+import com.sleepkqq.sololeveling.proto.user.GetUsersRequest
+import com.sleepkqq.sololeveling.proto.user.GetUsersResponse
 import com.sleepkqq.sololeveling.proto.user.GetUsersStatsResponse
 import com.sleepkqq.sololeveling.proto.user.UserServiceGrpc.UserServiceBlockingStub
 import org.springframework.stereotype.Service
@@ -21,4 +24,7 @@ class UserApi(
 
 	fun getUsersStats(): GetUsersStatsResponse =
 		userStub.getUsersStats(Empty.newBuilder().build())
+
+	fun getUsers(paging: RequestPaging): GetUsersResponse =
+		userStub.getUsers(GetUsersRequest.newBuilder().setPaging(paging).build())
 }

@@ -16,7 +16,7 @@ class UsersStatsCommand(
 
 	override val command: String = "/users_stats"
 
-	override val forList: Boolean = false
+	override val visible: Boolean = false
 
 	@PreAuthorize("hasAuthority('MANAGER')")
 	override fun handle(message: Message): InfoCommandResult {

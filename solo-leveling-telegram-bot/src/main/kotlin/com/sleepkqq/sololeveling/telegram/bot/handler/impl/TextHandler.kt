@@ -1,11 +1,11 @@
 package com.sleepkqq.sololeveling.telegram.bot.handler.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.handler.MessageHandler
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.bot.state.StateProcessor
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
-import com.sleepkqq.sololeveling.telegram.model.entity.user.Immutables
+import com.sleepkqq.sololeveling.telegram.model.entity.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod

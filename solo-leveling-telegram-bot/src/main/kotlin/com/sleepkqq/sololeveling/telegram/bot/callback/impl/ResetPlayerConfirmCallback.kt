@@ -2,9 +2,9 @@ package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.grpc.client.PlayerApi
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
-import com.sleepkqq.sololeveling.telegram.bot.service.user.UserInfoService
+import com.sleepkqq.sololeveling.telegram.bot.service.user.impl.UserInfoService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
 import com.sleepkqq.sololeveling.telegram.image.Image

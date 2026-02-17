@@ -6,6 +6,9 @@ import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.Localized;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.feedback.FeedbackMessageState;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.state.newsletter.NewsletterConfirmationState;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.state.newsletter.NewsletterDateTimeState;
+import com.sleepkqq.sololeveling.telegram.model.entity.user.state.newsletter.NewsletterMessageState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.player.ResetPlayerConfirmationState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.task.DeprecateAllTasksConfirmationState;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.task.DeprecateTasksByTopicConfirmationState;
@@ -27,7 +30,10 @@ import org.jetbrains.annotations.Nullable;
     @JsonSubTypes.Type(value = DeprecateTasksByTopicConfirmationState.class, name = "DeprecateTasksByTopicConfirmationState"),
     @JsonSubTypes.Type(value = DeprecateTasksByTopicState.class, name = "DeprecateTasksByTopicState"),
     @JsonSubTypes.Type(value = DeprecateAllTasksConfirmationState.class, name = "DeprecateAllTasksConfirmationState"),
-    @JsonSubTypes.Type(value = ResetPlayerConfirmationState.class, name = "ResetPlayerConfirmationState")
+    @JsonSubTypes.Type(value = ResetPlayerConfirmationState.class, name = "ResetPlayerConfirmationState"),
+    @JsonSubTypes.Type(value = NewsletterMessageState.class, name = "NewsletterMessageState"),
+    @JsonSubTypes.Type(value = NewsletterDateTimeState.class, name = "NewsletterDateTimeState"),
+    @JsonSubTypes.Type(value = NewsletterConfirmationState.class, name = "NewsletterConfirmationState")
 })
 public interface BotSessionState {
 

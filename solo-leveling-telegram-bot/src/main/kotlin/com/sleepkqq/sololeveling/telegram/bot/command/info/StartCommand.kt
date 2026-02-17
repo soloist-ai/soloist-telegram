@@ -11,7 +11,7 @@ class StartCommand : InfoCommand {
 
 	override val command: String = "/start"
 
-	override val forList: Boolean = true
+	override val visible: Boolean = true
 
 	override val description: String = "Start working with the bot"
 

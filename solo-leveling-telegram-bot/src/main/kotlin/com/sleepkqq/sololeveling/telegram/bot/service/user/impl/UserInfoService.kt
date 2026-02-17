@@ -1,4 +1,4 @@
-package com.sleepkqq.sololeveling.telegram.bot.service.user
+package com.sleepkqq.sololeveling.telegram.bot.service.user.impl
 
 import com.sleepkqq.sololeveling.proto.user.GetUserAdditionalInfoResponse
 import com.sleepkqq.sololeveling.proto.user.UserLocale

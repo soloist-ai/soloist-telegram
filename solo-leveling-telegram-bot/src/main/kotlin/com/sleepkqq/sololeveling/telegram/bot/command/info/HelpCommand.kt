@@ -10,7 +10,7 @@ class HelpCommand : InfoCommand {
 
 	override val command: String = "/help"
 
-	override val forList: Boolean = true
+	override val visible: Boolean = true
 
 	override val description: String = "Show help"
 

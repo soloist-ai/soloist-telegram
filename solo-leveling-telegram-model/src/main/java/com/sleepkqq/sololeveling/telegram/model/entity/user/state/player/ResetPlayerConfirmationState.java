@@ -16,7 +16,7 @@ public record ResetPlayerConfirmationState(
 
   @Override
   public LocalizationCode onEnterMessageCode() {
-    return LocalizationCode.STATE_RESET_PLAYER_ENTER;
+    return LocalizationCode.STATE_RESET_PLAYER_CONFIRMATION;
   }
 
   @Override

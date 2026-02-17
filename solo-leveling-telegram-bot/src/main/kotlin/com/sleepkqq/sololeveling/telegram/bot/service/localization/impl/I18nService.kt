@@ -1,13 +1,12 @@
-package com.sleepkqq.sololeveling.telegram.bot.service.localization
+package com.sleepkqq.sololeveling.telegram.bot.service.localization.impl
 
-import com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage
 import com.sleepkqq.sololeveling.telegram.bot.extensions.withReplyMarkup
 import com.sleepkqq.sololeveling.telegram.bot.service.image.ImageResourceService
 import com.sleepkqq.sololeveling.telegram.image.Image
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction
-import com.sleepkqq.sololeveling.telegram.localization.Localized
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
+import com.sleepkqq.sololeveling.telegram.localization.Localized
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.core.env.Environment
@@ -20,7 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
-import java.util.*
+import java.util.Locale
 
 @Service
 class I18nService(
@@ -87,7 +86,7 @@ class I18nService(
 		val effectiveParams = params.ifEmpty { localized.params }
 		val effectiveKeyboard = keyboard ?: localized.keyboard
 
-		val message = SendMessage(
+		val message = com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage(
 			chatId,
 			getMessageInternal(localized.localizationCode, effectiveParams, locale)
 		)
@@ -104,7 +103,10 @@ class I18nService(
 		keyboard: Keyboard? = null,
 		locale: Locale? = null
 	): SendMessage {
-		val message = SendMessage(chatId, getMessageInternal(code, params, locale))
+		val message = com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage(
+			chatId,
+			getMessageInternal(code, params, locale)
+		)
 		return keyboard?.let { message.withReplyMarkup(buildKeyboard(it, locale = locale)) } ?: message
 	}
 

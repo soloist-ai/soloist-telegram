@@ -42,17 +42,17 @@
     <maven-compiler.version>3.14.0</maven-compiler.version>
 
     <!-- kotlin -->
-    <kotlin.version>2.3.0-Beta2</kotlin.version>
+    <kotlin.version>2.3.10</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
 
     <!-- solo leveling -->
-    <solo-leveling-lib.version>1.6.1</solo-leveling-lib.version>
+    <solo-leveling-lib.version>1.6.5.1</solo-leveling-lib.version>
 
     <!-- grpc -->
     <spring-grpc.version>0.11.0</spring-grpc.version>
 
     <!-- telegrambots -->
-    <telegrambots.version>9.2.0</telegrambots.version>
+    <telegrambots.version>9.3.0</telegrambots.version>
 
     <!-- mapstruct -->
     <mapstruct.version>1.6.3</mapstruct.version>
@@ -63,6 +63,7 @@
     <jimmer.version>0.9.117</jimmer.version>
 
     <!-- utils -->
+    <streamex.version>0.8.3</streamex.version>
     <build-helper-plugin.version>3.3.0</build-helper-plugin.version>
     <bucket4j.version>8.10.1</bucket4j.version>
 
