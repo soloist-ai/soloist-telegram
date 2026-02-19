@@ -2,26 +2,30 @@ package com.sleepkqq.sololeveling.telegram.bot.service.broadcast.impl
 
 import com.sleepkqq.sololeveling.proto.user.LocaleUserView
 import com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage
+import com.sleepkqq.sololeveling.telegram.bot.extensions.withReplyMarkup
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
+import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.model.entity.broadcast.dto.ScheduledBroadcastView
 import com.sleepkqq.sololeveling.telegram.model.entity.localziation.LocalizedMessage
-import com.sleepkqq.sololeveling.telegram.model.entity.localziation.enums.MessageLocale
 import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
 import org.telegram.telegrambots.meta.api.objects.InputFile
+import java.util.Locale
 
 @Component
 class BroadcastExecutor(
-	private val telegramMessageSender: TelegramMessageSender
+	private val telegramMessageSender: TelegramMessageSender,
+	private val i18nService: I18nService
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
 
 	fun execute(broadcast: ScheduledBroadcastView, users: List<LocaleUserView>): ExecutionResult {
 		val messagesMap = broadcast.messages
-			.associateBy { it.locale }
+			.associateBy { Locale.forLanguageTag(it.locale.name.lowercase()) }
 			.mapValues { it.value.toEntity() }
 
 		var success = 0
@@ -37,13 +41,15 @@ class BroadcastExecutor(
 
 	private fun sendTo(
 		user: LocaleUserView,
-		messagesMap: Map<MessageLocale, LocalizedMessage>,
+		messagesMap: Map<Locale, LocalizedMessage>,
 		fileId: String?
 	): Boolean = try {
-		val locale = MessageLocale.valueOf(user.locale.uppercase())
+		val locale = Locale.forLanguageTag(user.locale)
 		val message = messagesMap[locale]
-			?: messagesMap[MessageLocale.EN]
+			?: messagesMap[Locale.ENGLISH]
 			?: messagesMap.values.first()
+
+		val keyboard = i18nService.buildKeyboard(Keyboard.MINI_APP_LINK, locale = locale)
 
 		if (fileId != null) {
 			telegramMessageSender.send(
@@ -51,10 +57,14 @@ class BroadcastExecutor(
 					.chatId(user.id)
 					.photo(InputFile(fileId))
 					.caption(message.text())
+					.replyMarkup(keyboard)
 					.build()
 			)
 		} else {
-			telegramMessageSender.send(SendMessage(user.id, message.text()))
+			telegramMessageSender.send(
+				SendMessage(user.id, message.text())
+					.withReplyMarkup(keyboard)
+			)
 		}
 
 		true

@@ -47,7 +47,7 @@ class I18nService(
 		return messageSource.getMessage(code.path, args, effectiveLocale)
 	}
 
-	private fun buildKeyboard(
+	fun buildKeyboard(
 		keyboard: Keyboard,
 		buttonsPerRow: Int = keyboard.actions.size,
 		locale: Locale? = null
