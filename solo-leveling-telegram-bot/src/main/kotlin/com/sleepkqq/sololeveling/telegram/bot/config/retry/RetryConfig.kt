@@ -8,7 +8,6 @@ import org.springframework.retry.RetryCallback
 import org.springframework.retry.RetryContext
 import org.springframework.retry.RetryListener
 import org.springframework.retry.support.RetryTemplate
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 
 @Configuration
 class RetryConfig(
@@ -26,7 +25,7 @@ class RetryConfig(
 			telegramRetryProperties.maxInterval,
 			true
 		)
-		.retryOn(TelegramApiException::class.java)
+		.customPolicy(TelegramRetryPolicy(telegramRetryProperties.maxAttempts))
 		.withListener(object : RetryListener {
 			override fun <T, E : Throwable> onError(
 				context: RetryContext,
