@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.handler.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.handler.MessageHandler
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.bot.state.StateProcessor
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 @Component
 class StateMessageHandler(
 	private val userSessionService: UserSessionService,
-	private val i18nService: I18nService,
+	private val telegramMessageFactory: TelegramMessageFactory,
 	stateProcessors: List<StateProcessor<out BotSessionState>>
 ) : MessageHandler {
 
@@ -28,7 +28,7 @@ class StateMessageHandler(
 
 	override fun handle(message: Message): BotApiMethod<*>? {
 		val session = userSessionService.find(message.chatId)
-			?: return i18nService.sendMessage(message.chatId, LocalizationCode.STATE_IDLE)
+			?: return telegramMessageFactory.sendMessage(message.chatId, LocalizationCode.STATE_IDLE)
 
 		val currentState = session.state()
 
@@ -38,7 +38,7 @@ class StateMessageHandler(
 			?: true
 
 		if (!processed) {
-			return i18nService.sendMessage(message.chatId, currentState.onEnterLocalized())
+			return telegramMessageFactory.sendMessage(message.chatId, currentState.onEnterLocalized())
 		}
 
 		val newState = currentState.nextState(message)
@@ -53,9 +53,9 @@ class StateMessageHandler(
 		}
 
 		if (currentState.onExitMessageCode() != null) {
-			return i18nService.sendMessage(message.chatId, currentState.onExitLocalized()!!)
+			return telegramMessageFactory.sendMessage(message.chatId, currentState.onExitLocalized()!!)
 		}
 
-		return i18nService.sendMessage(message.chatId, newState.onEnterLocalized())
+		return telegramMessageFactory.sendMessage(message.chatId, newState.onEnterLocalized())
 	}
 }

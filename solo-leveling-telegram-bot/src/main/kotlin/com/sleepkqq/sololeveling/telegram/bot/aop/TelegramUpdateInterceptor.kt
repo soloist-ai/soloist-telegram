@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.aop
 
 import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
 import com.sleepkqq.sololeveling.telegram.bot.service.auth.AuthService
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 @Component
 class TelegramUpdateInterceptor(
 	private val authService: AuthService,
-	private val i18nService: I18nService
+	private val telegramMessageFactory: TelegramMessageFactory,
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
@@ -38,7 +38,7 @@ class TelegramUpdateInterceptor(
 			val userId = UserContextHolder.getUserId()!!
 
 			log.warn("Authorization denied userId={}: {}", userId, e.message)
-			return i18nService.sendMessage(userId, LocalizationCode.ERROR_ACCESS_DENIED)
+			return telegramMessageFactory.sendMessage(userId, LocalizationCode.ERROR_ACCESS_DENIED)
 
 		} catch (ex: Exception) {
 			log.error(

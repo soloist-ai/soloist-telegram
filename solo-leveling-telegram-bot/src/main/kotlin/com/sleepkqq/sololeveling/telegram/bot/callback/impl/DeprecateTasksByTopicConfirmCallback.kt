@@ -3,7 +3,7 @@ package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.grpc.client.PlayerApi
 import com.sleepkqq.sololeveling.telegram.bot.mapper.ProtoMapper
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 class DeprecateTasksByTopicConfirmCallback(
 	private val userSessionService: UserSessionService,
 	private val playerApi: PlayerApi,
-	private val i18nService: I18nService,
+	private val telegramMessageFactory: TelegramMessageFactory,
 	private val protoMapper: ProtoMapper
 ) : Callback {
 
@@ -29,17 +29,17 @@ class DeprecateTasksByTopicConfirmCallback(
 		val messageId = callbackQuery.message.messageId
 
 		val state = session.state() as? DeprecateTasksByTopicConfirmationState
-			?: return i18nService.deleteMessage(userId, messageId)
+			?: return telegramMessageFactory.deleteMessage(userId, messageId)
 
 		userSessionService.idleState(userId)
 
 		val effectedRows = playerApi.deprecateTasksByTopic(protoMapper.map(state.taskTopic()))
 
-		return i18nService.editMessageText(
-			userId,
-			messageId,
-			state.onExitLocalized()!!,
-			listOf(effectedRows)
+		return telegramMessageFactory.editMessageText(
+			chatId = userId,
+			messageId = messageId,
+			localized = state.onExitLocalized()!!,
+			params = listOf(effectedRows)
 		)
 	}
 }

@@ -1,8 +1,8 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.broadcast.impl
 
 import com.sleepkqq.sololeveling.proto.user.LocaleUserView
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.PhotoSource
+import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.model.entity.broadcast.dto.ScheduledBroadcastView
@@ -18,7 +18,7 @@ import java.util.*
 @Component
 class BroadcastExecutor(
 	private val telegramMessageSender: TelegramMessageSender,
-	private val i18nService: I18nService
+	private val telegramMessageFactory: TelegramMessageFactory
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
@@ -50,7 +50,7 @@ class BroadcastExecutor(
 			?: messagesMap.values.first()
 
 		if (fileId != null) {
-			val sendPhoto = i18nService.sendPhoto(
+			val sendPhoto = telegramMessageFactory.sendPhoto(
 				chatId = user.id,
 				source = PhotoSource.FileId(fileId),
 				caption = message.text(),
@@ -60,7 +60,7 @@ class BroadcastExecutor(
 			telegramMessageSender.send(sendPhoto)
 
 		} else {
-			val sendMessage = i18nService.sendMessage(
+			val sendMessage = telegramMessageFactory.sendMessage(
 				chatId = user.id,
 				text = message.text(),
 				keyboard = Keyboard.MINI_APP_LINK,

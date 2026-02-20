@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 @Component
 class InterruptCancelCallback(
 	private val userSessionService: UserSessionService,
-	private val i18nService: I18nService
+	private val telegramMessageFactory: TelegramMessageFactory
 ) : Callback {
 
 	override val action: CallbackAction = CallbackAction.INTERRUPT_CANCEL
@@ -23,10 +23,10 @@ class InterruptCancelCallback(
 
 		userSessionService.cancelInterruptState(userId)
 
-		return i18nService.editMessageText(
-			userId,
-			messageId,
-			session.state().onEnterLocalized()
+		return telegramMessageFactory.editMessageText(
+			chatId = userId,
+			messageId = messageId,
+			localized = session.state().onEnterLocalized()
 		)
 	}
 }

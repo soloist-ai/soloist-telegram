@@ -2,7 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.service.broadcast.ScheduledBroadcastService
-import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 class SendNewsletterConfirmCallback(
 	private val userSessionService: UserSessionService,
 	private val scheduledBroadcastService: ScheduledBroadcastService,
-	private val i18nService: I18nService
+	private val telegramMessageFactory: TelegramMessageFactory
 ) : Callback {
 
 	override val action: CallbackAction = CallbackAction.SEND_NEWSLETTER_CONFIRM
@@ -27,16 +27,16 @@ class SendNewsletterConfirmCallback(
 		val messageId = callbackQuery.message.messageId
 
 		val state = session.state() as? NewsletterConfirmationState
-			?: return i18nService.deleteMessage(userId, messageId)
+			?: return telegramMessageFactory.deleteMessage(userId, messageId)
 
 		scheduledBroadcastService.insert(state)
 
 		userSessionService.idleState(userId)
 
-		return i18nService.editMessageText(
-			userId,
-			messageId,
-			session.state().onExitLocalized()!!
+		return telegramMessageFactory.editMessageText(
+			chatId = userId,
+			messageId = messageId,
+			localized = session.state().onExitLocalized()!!
 		)
 	}
 }
