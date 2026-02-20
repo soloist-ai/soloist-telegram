@@ -56,7 +56,7 @@ app:
         path: webbook
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_DEV}
       mini-app:
-        url: https://t.me/solo_level_bot/app
+        url: https://t.me/solo_leveling_dev_bot/app
     rate-limit:
       global: 25
       per-chat: 1
