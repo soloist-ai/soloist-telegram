@@ -1,6 +1,5 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.newsletter;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 import java.time.Instant;
@@ -11,7 +10,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-@JsonTypeName("NewsletterDateTimeState")
 public record NewsletterDateTimeState(
     String name,
     List<LocalizedMessageDto> localizations,

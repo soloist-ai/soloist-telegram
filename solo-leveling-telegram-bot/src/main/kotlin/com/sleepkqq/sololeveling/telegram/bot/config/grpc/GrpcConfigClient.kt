@@ -4,14 +4,13 @@ import com.sleepkqq.sololeveling.proto.config.DefaultGrpcClientConfig
 import com.sleepkqq.sololeveling.proto.config.interceptor.UserClientInterceptor
 import com.sleepkqq.sololeveling.proto.player.PlayerServiceGrpc
 import com.sleepkqq.sololeveling.proto.user.UserServiceGrpc
+import com.sleepkqq.sololeveling.telegram.bot.config.properties.GrpcPlayerServiceProperties
 import io.grpc.ClientInterceptor
 import io.grpc.ManagedChannel
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@EnableConfigurationProperties(GrpcPlayerServiceProperties::class)
 class GrpcConfigClient(
 	properties: GrpcPlayerServiceProperties
 ) : DefaultGrpcClientConfig(properties) {

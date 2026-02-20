@@ -54,7 +54,10 @@ app:
       send-message:
         global: 30
         per-chat: 1
-        period-seconds: 1
+        period: PT1S
+        bucket-ttl: PT10M
+        global-key: "rate_limit:telegram:global"
+        chat-key-prefix: "rate_limit:telegram:chat:"
   cache:
     redis:
       default-ttl: 1h

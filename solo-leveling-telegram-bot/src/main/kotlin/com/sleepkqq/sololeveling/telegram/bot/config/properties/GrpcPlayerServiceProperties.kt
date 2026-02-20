@@ -1,4 +1,4 @@
-package com.sleepkqq.sololeveling.telegram.bot.config.grpc
+package com.sleepkqq.sololeveling.telegram.bot.config.properties
 
 import com.sleepkqq.sololeveling.proto.config.GrpcServiceProperties
 import org.springframework.boot.context.properties.ConfigurationProperties

@@ -47,7 +47,7 @@
     <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
 
     <!-- solo leveling -->
-    <solo-leveling-lib.version>1.6.5.1</solo-leveling-lib.version>
+    <solo-leveling-lib.version>1.6.6</solo-leveling-lib.version>
 
     <!-- grpc -->
     <spring-grpc.version>0.11.0</spring-grpc.version>
@@ -66,7 +66,7 @@
     <!-- utils -->
     <streamex.version>0.8.3</streamex.version>
     <build-helper-plugin.version>3.3.0</build-helper-plugin.version>
-    <bucket4j.version>8.10.1</bucket4j.version>
+    <bucket4j.version>8.16.1</bucket4j.version>
 
     <!-- tests -->
     <test-containers.version>1.21.3</test-containers.version>

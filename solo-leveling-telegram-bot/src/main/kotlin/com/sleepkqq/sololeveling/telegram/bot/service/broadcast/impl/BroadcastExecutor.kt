@@ -1,19 +1,19 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.broadcast.impl
 
 import com.sleepkqq.sololeveling.proto.user.LocaleUserView
-import com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage
-import com.sleepkqq.sololeveling.telegram.bot.extensions.withReplyMarkup
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.PhotoSource
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.model.entity.broadcast.dto.ScheduledBroadcastView
 import com.sleepkqq.sololeveling.telegram.model.entity.localziation.LocalizedMessage
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto
-import org.telegram.telegrambots.meta.api.objects.InputFile
-import java.util.Locale
+import java.util.*
 
 @Component
 class BroadcastExecutor(
@@ -49,22 +49,24 @@ class BroadcastExecutor(
 			?: messagesMap[Locale.ENGLISH]
 			?: messagesMap.values.first()
 
-		val keyboard = i18nService.buildKeyboard(Keyboard.MINI_APP_LINK, locale = locale)
-
 		if (fileId != null) {
-			telegramMessageSender.send(
-				SendPhoto.builder()
-					.chatId(user.id)
-					.photo(InputFile(fileId))
-					.caption(message.text())
-					.replyMarkup(keyboard)
-					.build()
+			val sendPhoto = i18nService.sendPhoto(
+				chatId = user.id,
+				source = PhotoSource.FileId(fileId),
+				caption = message.text(),
+				keyboard = Keyboard.MINI_APP_LINK,
+				locale = locale
 			)
+			telegramMessageSender.send(sendPhoto)
+
 		} else {
-			telegramMessageSender.send(
-				SendMessage(user.id, message.text())
-					.withReplyMarkup(keyboard)
+			val sendMessage = i18nService.sendMessage(
+				chatId = user.id,
+				text = message.text(),
+				keyboard = Keyboard.MINI_APP_LINK,
+				locale = locale
 			)
+			telegramMessageSender.send(sendMessage)
 		}
 
 		true

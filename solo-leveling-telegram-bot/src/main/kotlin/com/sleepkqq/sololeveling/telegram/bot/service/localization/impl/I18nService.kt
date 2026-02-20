@@ -1,8 +1,6 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.localization.impl
 
-import com.sleepkqq.sololeveling.telegram.bot.extensions.withReplyMarkup
 import com.sleepkqq.sololeveling.telegram.bot.service.image.ImageResourceService
-import com.sleepkqq.sololeveling.telegram.image.Image
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
 import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
@@ -19,7 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
-import java.util.Locale
+import java.util.*
 
 @Service
 class I18nService(
@@ -32,19 +30,170 @@ class I18nService(
 		const val HTML_MODE = "HTML"
 	}
 
-	private fun getMessageInternal(
+	// ============ SendMessage ============
+
+	fun sendMessage(
+		chatId: Long,
+		localized: Localized,
+		params: List<Any> = emptyList(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendMessage = sendMessage(
+		chatId = chatId,
+		text = getMessage(localized.localizationCode, params.ifEmpty { localized.params }, locale),
+		keyboard = keyboard ?: localized.keyboard,
+		locale = locale
+	)
+
+	fun sendMessage(
+		chatId: Long,
 		code: LocalizationCode,
-		params: List<Any> = listOf(),
+		params: List<Any> = emptyList(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendMessage = sendMessage(
+		chatId = chatId,
+		text = getMessage(code, params, locale),
+		keyboard = keyboard,
+		locale = locale
+	)
+
+	fun sendMessage(
+		chatId: Long,
+		text: String,
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendMessage = SendMessage.builder()
+		.chatId(chatId.toString())
+		.text(text)
+		.parseMode(HTML_MODE)
+		.apply { keyboard?.let { replyMarkup(buildKeyboard(it, locale = locale)) } }
+		.build()
+
+	// ============ SendPhoto ============
+
+	fun sendPhoto(
+		chatId: Long,
+		source: PhotoSource,
+		localized: Localized,
+		params: List<Any> = emptyList(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendPhoto = sendPhoto(
+		chatId = chatId,
+		source = source,
+		caption = getMessage(localized.localizationCode, params.ifEmpty { localized.params }, locale),
+		keyboard = keyboard ?: localized.keyboard,
+		locale = locale
+	)
+
+	fun sendPhoto(
+		chatId: Long,
+		source: PhotoSource,
+		code: LocalizationCode,
+		params: List<Any> = emptyList(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendPhoto = sendPhoto(
+		chatId = chatId,
+		source = source,
+		caption = getMessage(code, params, locale),
+		keyboard = keyboard,
+		locale = locale
+	)
+
+	fun sendPhoto(
+		chatId: Long,
+		source: PhotoSource,
+		caption: String,
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): SendPhoto {
+		val photo = when (source) {
+			is PhotoSource.FileId -> InputFile(source.id)
+			is PhotoSource.Resource -> InputFile(
+				imageResourceService.getPhotoStream(source.image),
+				source.image.fileName
+			)
+		}
+
+		return SendPhoto.builder()
+			.chatId(chatId.toString())
+			.photo(photo)
+			.caption(caption)
+			.parseMode(HTML_MODE)
+			.apply { keyboard?.let { replyMarkup(buildKeyboard(it, locale = locale)) } }
+			.build()
+	}
+
+	// ============ EditMessageText ============
+
+	fun editMessageText(
+		chatId: Long,
+		messageId: Int,
+		localized: Localized,
+		params: List<Any> = emptyList(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): EditMessageText = editMessageText(
+		chatId = chatId,
+		messageId = messageId,
+		text = getMessage(localized.localizationCode, params.ifEmpty { localized.params }, locale),
+		keyboard = keyboard ?: localized.keyboard,
+		locale = locale
+	)
+
+	fun editMessageText(
+		chatId: Long,
+		messageId: Int,
+		code: LocalizationCode,
+		params: List<Any> = emptyList(),
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): EditMessageText = editMessageText(
+		chatId = chatId,
+		messageId = messageId,
+		text = getMessage(code, params, locale),
+		keyboard = keyboard,
+		locale = locale
+	)
+
+	fun editMessageText(
+		chatId: Long,
+		messageId: Int,
+		text: String,
+		keyboard: Keyboard? = null,
+		locale: Locale? = null
+	): EditMessageText =
+		EditMessageText.builder()
+			.chatId(chatId.toString())
+			.messageId(messageId)
+			.text(text)
+			.parseMode(HTML_MODE)
+			.apply { keyboard?.let { replyMarkup(buildKeyboard(it, locale = locale)) } }
+			.build()
+
+	// ============ DeleteMessage ============
+
+	fun deleteMessage(chatId: Long, messageId: Int): DeleteMessage =
+		DeleteMessage.builder()
+			.chatId(chatId.toString())
+			.messageId(messageId)
+			.build()
+
+	// ============ Utils ============
+
+	fun getMessage(
+		code: LocalizationCode,
+		params: List<Any> = emptyList(),
 		locale: Locale? = null
 	): String {
 		val effectiveLocale = locale ?: LocaleContextHolder.getLocale()
-
-		if (params.isEmpty()) {
-			return messageSource.getMessage(code.path, null, effectiveLocale)
-		}
-
-		val args = params.toTypedArray()
-		return messageSource.getMessage(code.path, args, effectiveLocale)
+		return messageSource.getMessage(
+			code.path,
+			params.toTypedArray().takeIf { it.isNotEmpty() },
+			effectiveLocale
+		)
 	}
 
 	fun buildKeyboard(
@@ -59,149 +208,14 @@ class I18nService(
 
 	private fun createButton(action: KeyboardAction, locale: Locale? = null): InlineKeyboardButton =
 		when (action) {
-			is KeyboardAction.Callback ->
-				InlineKeyboardButton.builder()
-					.text(getMessageInternal(action.callbackAction.localizationCode, locale = locale))
-					.callbackData(action.callbackAction.action)
-					.build()
+			is KeyboardAction.Callback -> InlineKeyboardButton.builder()
+				.text(getMessage(action.callbackAction.localizationCode, locale = locale))
+				.callbackData(action.callbackAction.action)
+				.build()
 
-			is KeyboardAction.Url -> {
-				val url = environment.getRequiredProperty(action.urlProperty)
-				InlineKeyboardButton.builder()
-					.text(getMessageInternal(action.localizationCode, locale = locale))
-					.url(url)
-					.build()
-			}
+			is KeyboardAction.Url -> InlineKeyboardButton.builder()
+				.text(getMessage(action.localizationCode, locale = locale))
+				.url(environment.getRequiredProperty(action.urlProperty))
+				.build()
 		}
-
-	// ============ SendMessage ============
-
-	fun sendMessage(
-		chatId: Long,
-		localized: Localized,
-		params: List<Any> = emptyList(),
-		keyboard: Keyboard? = null,
-		locale: Locale? = null
-	): SendMessage {
-		val effectiveParams = params.ifEmpty { localized.params }
-		val effectiveKeyboard = keyboard ?: localized.keyboard
-
-		val message = com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage(
-			chatId,
-			getMessageInternal(localized.localizationCode, effectiveParams, locale)
-		)
-
-		return effectiveKeyboard
-			?.let { message.withReplyMarkup(buildKeyboard(it, locale = locale)) }
-			?: message
-	}
-
-	fun sendMessage(
-		chatId: Long,
-		code: LocalizationCode,
-		params: List<Any> = emptyList(),
-		keyboard: Keyboard? = null,
-		locale: Locale? = null
-	): SendMessage {
-		val message = com.sleepkqq.sololeveling.telegram.bot.extensions.SendMessage(
-			chatId,
-			getMessageInternal(code, params, locale)
-		)
-		return keyboard?.let { message.withReplyMarkup(buildKeyboard(it, locale = locale)) } ?: message
-	}
-
-	// ============ SendPhoto ============
-
-	fun sendPhoto(
-		chatId: Long,
-		image: Image,
-		localized: Localized,
-		params: List<Any> = emptyList(),
-		keyboard: Keyboard? = null,
-		locale: Locale? = null
-	): SendPhoto {
-		val effectiveParams = params.ifEmpty { localized.params }
-		val effectiveKeyboard = keyboard ?: localized.keyboard
-
-		val photoStream = imageResourceService.getPhotoStream(image)
-		val sendPhoto = SendPhoto.builder()
-			.chatId(chatId.toString())
-			.photo(InputFile(photoStream, image.fileName))
-			.caption(getMessageInternal(localized.localizationCode, effectiveParams, locale))
-			.parseMode(HTML_MODE)
-
-		return effectiveKeyboard
-			?.let { sendPhoto.replyMarkup(buildKeyboard(it, locale = locale)).build() }
-			?: sendPhoto.build()
-	}
-
-	fun sendPhoto(
-		chatId: Long,
-		image: Image,
-		code: LocalizationCode,
-		params: List<Any> = emptyList(),
-		keyboard: Keyboard? = null,
-		locale: Locale? = null
-	): SendPhoto {
-		val photoStream = imageResourceService.getPhotoStream(image)
-		val sendPhoto = SendPhoto.builder()
-			.chatId(chatId.toString())
-			.photo(InputFile(photoStream, image.fileName))
-			.caption(getMessageInternal(code, params, locale))
-			.parseMode(HTML_MODE)
-
-		return keyboard
-			?.let { sendPhoto.replyMarkup(buildKeyboard(it, locale = locale)).build() }
-			?: sendPhoto.build()
-	}
-
-	// ============ EditMessageText ============
-
-	fun editMessageText(
-		chatId: Long,
-		messageId: Int,
-		localized: Localized,
-		params: List<Any> = emptyList(),
-		keyboard: Keyboard? = null,
-		locale: Locale? = null
-	): EditMessageText {
-		val effectiveParams = params.ifEmpty { localized.params }
-		val effectiveKeyboard = keyboard ?: localized.keyboard
-
-		val edit = EditMessageText.builder()
-			.chatId(chatId.toString())
-			.messageId(messageId)
-			.text(getMessageInternal(localized.localizationCode, effectiveParams, locale))
-
-		return effectiveKeyboard
-			?.let { edit.replyMarkup(buildKeyboard(it, locale = locale)).build() }
-			?: edit.build()
-	}
-
-	fun editMessageText(
-		chatId: Long,
-		messageId: Int,
-		code: LocalizationCode,
-		params: List<Any> = emptyList(),
-		keyboard: Keyboard? = null,
-		locale: Locale? = null
-	): EditMessageText {
-		val edit = EditMessageText.builder()
-			.chatId(chatId.toString())
-			.messageId(messageId)
-			.text(getMessageInternal(code, params, locale))
-
-		return keyboard
-			?.let { edit.replyMarkup(buildKeyboard(it, locale = locale)).build() }
-			?: edit.build()
-	}
-
-	// ============ DeleteMessage ============
-
-	fun deleteMessage(chatId: Long, messageId: Int): DeleteMessage {
-		return DeleteMessage.builder()
-			.chatId(chatId.toString())
-			.messageId(messageId)
-			.build()
-	}
 }

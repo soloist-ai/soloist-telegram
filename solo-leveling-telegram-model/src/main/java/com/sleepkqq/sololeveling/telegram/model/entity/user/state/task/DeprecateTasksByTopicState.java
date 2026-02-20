@@ -1,12 +1,10 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.task;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 import com.sleepkqq.sololeveling.telegram.task.TaskTopic;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-@JsonTypeName("DeprecateTasksByTopicState")
 public record DeprecateTasksByTopicState() implements BotSessionState {
 
   @Override

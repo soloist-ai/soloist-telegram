@@ -1,11 +1,9 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.task;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 
-@JsonTypeName("DeprecateAllTasksConfirmationState")
 public record DeprecateAllTasksConfirmationState() implements BotSessionState {
 
   @Override

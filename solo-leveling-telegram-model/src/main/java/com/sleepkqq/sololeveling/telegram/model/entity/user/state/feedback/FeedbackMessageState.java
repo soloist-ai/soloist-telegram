@@ -1,10 +1,8 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.feedback;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 
-@JsonTypeName("FeedbackMessageState")
 public record FeedbackMessageState() implements BotSessionState {
 
   @Override

@@ -3,6 +3,7 @@ package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.grpc.client.PlayerApi
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
+import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.PhotoSource
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
 import com.sleepkqq.sololeveling.telegram.bot.service.user.impl.UserInfoService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
@@ -55,7 +56,7 @@ class ResetPlayerConfirmCallback(
 
 		val sendPhoto = i18nService.sendPhoto(
 			playerId,
-			Image.RESET_PLAYER,
+			PhotoSource.Resource(Image.RESET_PLAYER),
 			LocalizationCode.INFO_PLAYER_RESET,
 			locale = playerLocale
 		)

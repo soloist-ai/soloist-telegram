@@ -2,21 +2,22 @@ package com.sleepkqq.sololeveling.telegram.bot.config.cache
 
 import com.google.protobuf.MessageLite
 import com.sleepkqq.sololeveling.proto.user.GetUserAdditionalInfoResponse
+import com.sleepkqq.sololeveling.telegram.bot.config.properties.RedisCacheProperties
+import io.lettuce.core.RedisClient
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.cache.RedisCacheConfiguration
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.RedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
 
-@Configuration
 @EnableCaching
-@EnableConfigurationProperties(RedisCacheProperties::class)
+@Configuration
 class RedisConfig(
 	private val cacheProperties: RedisCacheProperties
 ) {
@@ -41,6 +42,10 @@ class RedisConfig(
 
 		builder.withInitialCacheConfigurations(configMap)
 	}
+
+	@Bean
+	fun redisClient(factory: LettuceConnectionFactory): RedisClient =
+		factory.nativeClient as RedisClient
 
 	private fun createDefaultCacheConfig(): RedisCacheConfiguration {
 		return RedisCacheConfiguration.defaultCacheConfig()

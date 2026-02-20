@@ -1,6 +1,5 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.newsletter;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
@@ -10,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import one.util.streamex.StreamEx;
 
-@JsonTypeName("NewsletterConfirmationState")
 public record NewsletterConfirmationState(
     String name,
     List<LocalizedMessageDto> localizations,
@@ -34,7 +32,7 @@ public record NewsletterConfirmationState(
   @Override
   public List<Object> onEnterMessageParams() {
     var formattedLocalizations = StreamEx.of(localizations)
-        .map(l -> "\n  [%s]: %s".formatted(l.locale(), l.text()))
+        .map(l -> "\n[%s]: %s".formatted(l.locale(), l.text()))
         .joining();
     var formattedFileId = fileId != null ? "✅" : "❌";
     var formattedDate = FORMATTER.format(scheduledAt) + " (UTC)";

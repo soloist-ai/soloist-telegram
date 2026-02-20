@@ -1,6 +1,5 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.newsletter;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.localziation.enums.MessageLocale;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-@JsonTypeName("NewsletterMessageState")
 public record NewsletterMessageState(
     String name,
     List<MessageLocale> remaining,

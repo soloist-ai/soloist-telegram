@@ -60,6 +60,11 @@
       <artifactId>telegrambots-springboot-webhook-starter</artifactId>
       <version>${telegrambots.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.telegram</groupId>
+      <artifactId>telegrambots-client</artifactId>
+      <version>${telegrambots.version}</version>
+    </dependency>
 
     <!-- mapstruct -->
     <dependency>
@@ -97,7 +102,7 @@
     <!-- utils -->
     <dependency>
       <groupId>com.bucket4j</groupId>
-      <artifactId>bucket4j-core</artifactId>
+      <artifactId>bucket4j_jdk17-lettuce</artifactId>
       <version>${bucket4j.version}</version>
     </dependency>
   </dependencies>

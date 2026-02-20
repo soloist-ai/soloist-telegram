@@ -1,12 +1,10 @@
 package com.sleepkqq.sololeveling.telegram.model.entity.user.state.player;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard;
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode;
 import com.sleepkqq.sololeveling.telegram.model.entity.user.state.BotSessionState;
 import java.util.List;
 
-@JsonTypeName("ResetPlayerConfirmationState")
 public record ResetPlayerConfirmationState(
     long id,
     String username,

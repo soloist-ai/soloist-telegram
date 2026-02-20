@@ -1,4 +1,4 @@
-package com.sleepkqq.sololeveling.telegram.bot.config.cache
+package com.sleepkqq.sololeveling.telegram.bot.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.time.Duration
