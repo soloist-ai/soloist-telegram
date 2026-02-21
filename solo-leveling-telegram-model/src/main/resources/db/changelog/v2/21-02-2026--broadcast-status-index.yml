@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: scheduled-broadcasts-status-index
+      author: sleepkqq
+      changes:
+        - createIndex:
+            tableName: scheduled_broadcasts
+            indexName: idx_scheduled_broadcasts_status
+            columns:
+              - column:
+                  name: status

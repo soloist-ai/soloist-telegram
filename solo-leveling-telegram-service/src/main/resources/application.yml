@@ -76,6 +76,11 @@ app:
         user-info:
           ttl: 10m
           nullable: false
+  schedule:
+    broadcast:
+      task:
+        pool-size: 10
+        await-termination-seconds: 60
 management:
   endpoints:
     web:

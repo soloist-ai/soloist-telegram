@@ -36,7 +36,7 @@ class SendNewsletterConfirmCallback(
 		return telegramMessageFactory.editMessageText(
 			chatId = userId,
 			messageId = messageId,
-			localized = session.state().onExitLocalized()!!
+			localized = state.onExitLocalized()!!
 		)
 	}
 }

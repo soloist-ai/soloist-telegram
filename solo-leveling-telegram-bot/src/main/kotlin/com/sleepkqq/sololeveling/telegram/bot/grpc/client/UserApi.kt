@@ -25,6 +25,10 @@ class UserApi(
 	fun getUsersStats(): GetUsersStatsResponse =
 		userStub.getUsersStats(Empty.newBuilder().build())
 
-	fun getUsers(paging: RequestPaging): GetUsersResponse =
-		userStub.getUsers(GetUsersRequest.newBuilder().setPaging(paging).build())
+	fun getUsers(page: Int, pageSize: Int): GetUsersResponse =
+		userStub.getUsers(
+			GetUsersRequest.newBuilder()
+				.setPaging(RequestPaging.newBuilder().setPage(page).setPageSize(pageSize))
+				.build()
+		)
 }

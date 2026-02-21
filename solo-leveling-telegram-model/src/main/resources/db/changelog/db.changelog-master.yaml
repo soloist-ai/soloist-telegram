@@ -6,3 +6,5 @@ databaseChangeLog:
   # v2
   - include:
       file: db/changelog/v2/18-02-2026--scheduled-broadcast.yml
+  - include:
+      file: db/changelog/v2/21-02-2026--broadcast-status-index.yml

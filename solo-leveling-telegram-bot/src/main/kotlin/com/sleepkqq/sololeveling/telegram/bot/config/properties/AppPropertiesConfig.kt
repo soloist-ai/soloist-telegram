@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration
 	TelegramRateLimitProperties::class,
 	TelegramRetryProperties::class,
 	RedisCacheProperties::class,
-	GrpcPlayerServiceProperties::class
+	GrpcPlayerServiceProperties::class,
+	ScheduledBroadcastTaskProperties::class
 )
 class AppPropertiesConfig

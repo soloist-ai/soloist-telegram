@@ -1,11 +1,11 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.broadcast.impl
 
-import com.sleepkqq.sololeveling.proto.player.RequestPaging
 import com.sleepkqq.sololeveling.telegram.bot.event.RunBroadcastEvent
 import com.sleepkqq.sololeveling.telegram.bot.grpc.client.UserApi
 import com.sleepkqq.sololeveling.telegram.bot.service.broadcast.ScheduledBroadcastService
 import com.sleepkqq.sololeveling.telegram.model.entity.Immutables
 import com.sleepkqq.sololeveling.telegram.model.entity.broadcast.enums.BroadcastStatus
+import org.babyfish.jimmer.sql.exception.SaveException
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -28,20 +28,25 @@ class BroadcastRunner(
 		val broadcast = event.broadcast
 		if (broadcast.status != BroadcastStatus.PENDING) return
 
-		val inProgressBroadcast = scheduledBroadcastService.updateStatus(
-			broadcast.toEntity(),
-			BroadcastStatus.IN_PROGRESS
-		)
+		val inProgressBroadcast = try {
+			scheduledBroadcastService.updateStatus(
+				broadcast.toEntity(),
+				BroadcastStatus.IN_PROGRESS
+			)
+		} catch (_: SaveException.OptimisticLockError) {
+			log.info("Broadcast {} already claimed by concurrent event, skipping", broadcast.id)
+			return
+		}
+
+		var currentPage = 0
+		var total = 0
+		var totalSuccess = 0
+		var totalFailed = 0
+		var status = BroadcastStatus.FAILED
 
 		try {
-			var currentPage = 0
-			var total = 0
-			var totalSuccess = 0
-			var totalFailed = 0
-
 			do {
-				val paging = RequestPaging.newBuilder().setPage(currentPage).setPageSize(PAGE_SIZE).build()
-				val response = userApi.getUsers(paging)
+				val response = userApi.getUsers(currentPage, PAGE_SIZE)
 
 				val result = broadcastExecutor.execute(broadcast, response.usersList)
 				total += result.total
@@ -51,12 +56,7 @@ class BroadcastRunner(
 				currentPage++
 			} while (response.paging.hasMore)
 
-			scheduledBroadcastService.update(Immutables.createScheduledBroadcast(inProgressBroadcast) {
-				it.setStatus(BroadcastStatus.COMPLETED)
-					.setTotal(total)
-					.setTotalSuccess(totalSuccess)
-					.setTotalFailed(totalFailed)
-			})
+			status = BroadcastStatus.COMPLETED
 
 			log.info(
 				"Broadcast {} completed: total={} success={}, failed={}",
@@ -64,8 +64,20 @@ class BroadcastRunner(
 			)
 
 		} catch (e: Exception) {
-			log.error("Broadcast {} failed", broadcast.id, e)
-			scheduledBroadcastService.updateStatus(inProgressBroadcast, BroadcastStatus.FAILED)
+			log.error(
+				"Broadcast {} failed at page {}: total={} success={} failed={}",
+				broadcast.id, currentPage, total, totalSuccess, totalFailed, e
+			)
+
+		} finally {
+			scheduledBroadcastService.update(
+				Immutables.createScheduledBroadcast(inProgressBroadcast) {
+					it.setStatus(status)
+						.setTotal(total)
+						.setTotalSuccess(totalSuccess)
+						.setTotalFailed(totalFailed)
+				}
+			)
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.sleepkqq.sololeveling.telegram.bot.config
 
+import com.sleepkqq.sololeveling.telegram.bot.config.properties.ScheduledBroadcastTaskProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.TaskScheduler
@@ -12,12 +13,13 @@ import java.util.concurrent.ThreadPoolExecutor
 class SchedulingConfiguration {
 
 	@Bean
-	fun broadcastTaskScheduler(): TaskScheduler = ThreadPoolTaskScheduler().apply {
-		poolSize = 10
-		setThreadNamePrefix("broadcast-")
-		setAwaitTerminationSeconds(60)
-		setWaitForTasksToCompleteOnShutdown(true)
-		setRejectedExecutionHandler(ThreadPoolExecutor.CallerRunsPolicy())
-		initialize()
-	}
+	fun broadcastTaskScheduler(properties: ScheduledBroadcastTaskProperties): TaskScheduler =
+		ThreadPoolTaskScheduler().apply {
+			poolSize = properties.poolSize
+			setThreadNamePrefix("broadcast-")
+			setAwaitTerminationSeconds(properties.awaitTerminationSeconds)
+			setWaitForTasksToCompleteOnShutdown(true)
+			setRejectedExecutionHandler(ThreadPoolExecutor.CallerRunsPolicy())
+			initialize()
+		}
 }
