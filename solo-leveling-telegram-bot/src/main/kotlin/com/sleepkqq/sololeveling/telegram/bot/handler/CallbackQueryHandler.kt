@@ -1,8 +1,25 @@
 package com.sleepkqq.sololeveling.telegram.bot.handler
 
+import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
+import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
+import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 
-interface CallbackQueryHandler {
-	fun handle(callbackQuery: CallbackQuery): BotApiMethod<*>?
+@Component
+class CallbackQueryHandler(
+	callbacks: List<Callback>,
+	private val userSessionService: UserSessionService
+) {
+
+	private val callbacksMap = callbacks.associateBy { it.action.action }
+
+	fun handle(callbackQuery: CallbackQuery): BotApiMethod<*>? {
+		val userId = callbackQuery.from.id
+		val session = userSessionService.find(userId)
+			?: return null
+
+		return callbacksMap[callbackQuery.data]
+			?.handle(callbackQuery, session)
+	}
 }

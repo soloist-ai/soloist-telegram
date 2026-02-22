@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.dispatcher
 
-import com.sleepkqq.sololeveling.telegram.bot.handler.impl.CommandHandler
-import com.sleepkqq.sololeveling.telegram.bot.handler.impl.StateMessageHandler
+import com.sleepkqq.sololeveling.telegram.bot.handler.CommandHandler
+import com.sleepkqq.sololeveling.telegram.bot.handler.StateMessageHandler
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.message.Message

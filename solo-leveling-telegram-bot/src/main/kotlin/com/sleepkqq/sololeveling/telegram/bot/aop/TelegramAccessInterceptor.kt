@@ -1,0 +1,59 @@
+package com.sleepkqq.sololeveling.telegram.bot.aop
+
+import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
+import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
+import com.sleepkqq.sololeveling.telegram.bot.command.Command
+import com.sleepkqq.sololeveling.telegram.bot.model.UserRole
+import com.sleepkqq.sololeveling.telegram.bot.service.auth.AuthService
+import org.aspectj.lang.JoinPoint
+import org.aspectj.lang.annotation.Aspect
+import org.aspectj.lang.annotation.Before
+import org.slf4j.LoggerFactory
+import org.springframework.core.annotation.Order
+import org.springframework.security.authorization.AuthorizationDeniedException
+import org.springframework.stereotype.Component
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery
+import org.telegram.telegrambots.meta.api.objects.message.Message
+
+@Aspect
+@Order(20)
+@Component
+class TelegramAccessInterceptor(
+	private val authService: AuthService,
+	commands: List<Command>,
+	callbacks: List<Callback>
+) {
+
+	private val log = LoggerFactory.getLogger(javaClass)
+	private val commandsMap: Map<String, Command> = commands.associateBy { it.command }
+	private val callbacksMap: Map<String, Callback> = callbacks.associateBy { it.action.action }
+
+	@Before("execution(* com.sleepkqq.sololeveling.telegram.bot.handler.CommandHandler.handle(..))")
+	fun checkCommandAccess(joinPoint: JoinPoint) {
+		val message = joinPoint.args.firstOrNull() as? Message ?: return
+		val command = commandsMap[message.text.split(" ").first()] ?: return
+
+		log.info("Command={} called by userId={}", command.command, UserContextHolder.getUserId())
+
+		checkAccess(command.requiredRole)
+	}
+
+	@Before("execution(* com.sleepkqq.sololeveling.telegram.bot.handler.CallbackQueryHandler.handle(..))")
+	fun checkCallbackAccess(joinPoint: JoinPoint) {
+		val callbackQuery = joinPoint.args.firstOrNull() as? CallbackQuery ?: return
+		val callback = callbacksMap[callbackQuery.data] ?: return
+
+		log.info("Callback={} called by userId={}", callbackQuery.data, UserContextHolder.getUserId())
+
+		checkAccess(callback.requiredRole)
+	}
+
+	private fun checkAccess(requiredRole: UserRole) {
+		if (requiredRole == UserRole.USER) return
+
+		if (!authService.hasRole(requiredRole)) {
+			val userId = UserContextHolder.getUserId()!!
+			throw AuthorizationDeniedException("Access denied for userId=$userId, role=$requiredRole required")
+		}
+	}
+}

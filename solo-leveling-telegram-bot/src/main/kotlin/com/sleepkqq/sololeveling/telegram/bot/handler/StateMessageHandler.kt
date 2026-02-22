@@ -1,6 +1,5 @@
-package com.sleepkqq.sololeveling.telegram.bot.handler.impl
+package com.sleepkqq.sololeveling.telegram.bot.handler
 
-import com.sleepkqq.sololeveling.telegram.bot.handler.MessageHandler
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.bot.state.StateProcessor
@@ -17,7 +16,7 @@ class StateMessageHandler(
 	private val userSessionService: UserSessionService,
 	private val telegramMessageFactory: TelegramMessageFactory,
 	stateProcessors: List<StateProcessor<out BotSessionState>>
-) : MessageHandler {
+) {
 
 	private val stateProcessorsMap: Map<KClass<out BotSessionState>, StateProcessor<BotSessionState>> =
 		stateProcessors.associate { processor ->
@@ -26,7 +25,7 @@ class StateMessageHandler(
 				.let { it.getStateClass() to it }
 		}
 
-	override fun handle(message: Message): BotApiMethod<*>? {
+	fun handle(message: Message): BotApiMethod<*>? {
 		val session = userSessionService.find(message.chatId)
 			?: return telegramMessageFactory.sendMessage(message.chatId, StateCode.IDLE)
 

@@ -2,6 +2,7 @@ package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.grpc.client.PlayerApi
+import com.sleepkqq.sololeveling.telegram.bot.model.UserRole
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.PhotoSource
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
@@ -16,7 +17,6 @@ import com.sleepkqq.sololeveling.telegram.model.entity.user.state.player.ResetPl
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import org.slf4j.LoggerFactory
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
@@ -32,10 +32,10 @@ class ResetPlayerConfirmCallback(
 ) : Callback {
 
 	override val action: CallbackAction = CallbackAction.RESET_PLAYER_CONFIRM
+	override val requiredRole: UserRole = UserRole.DEVELOPER
 
 	private val log = LoggerFactory.getLogger(javaClass)
 
-	@PreAuthorize("hasAuthority('DEVELOPER')")
 	override fun handle(callbackQuery: CallbackQuery, session: UserSession): BotApiMethod<*>? {
 		val userId = callbackQuery.from.id
 		val messageId = callbackQuery.message.messageId
