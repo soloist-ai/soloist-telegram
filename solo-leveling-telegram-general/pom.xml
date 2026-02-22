@@ -24,6 +24,12 @@
       <artifactId>kotlin-reflect</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.sleepkqq</groupId>
+      <artifactId>solo-leveling-proto</artifactId>
+      <version>${solo-leveling-lib.version}</version>
+    </dependency>
   </dependencies>
 
   <build>

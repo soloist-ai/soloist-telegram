@@ -2,7 +2,6 @@ package com.sleepkqq.sololeveling.telegram.bot.mapper
 
 import com.sleepkqq.sololeveling.proto.user.UserLocale
 import com.sleepkqq.sololeveling.proto.user.UserRole
-import com.sleepkqq.sololeveling.telegram.task.TaskTopic
 import org.mapstruct.*
 import java.util.Locale
 
@@ -23,7 +22,4 @@ abstract class ProtoMapper {
 			Collection<com.sleepkqq.sololeveling.telegram.bot.model.UserRole>
 
 	fun map(input: UserLocale): Locale = Locale.forLanguageTag(input.tag)
-
-	fun map(input: TaskTopic): com.sleepkqq.sololeveling.proto.player.TaskTopic =
-		com.sleepkqq.sololeveling.proto.player.TaskTopic.valueOf(input.name)
 }

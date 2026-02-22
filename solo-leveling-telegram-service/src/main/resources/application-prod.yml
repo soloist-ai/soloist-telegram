@@ -14,7 +14,7 @@ app:
     bot:
       token: ${TELEGRAM_BOT_TOKEN_APP}
       webhook:
-        host: https://telegram.solo-leveling.org
+        host: https://telegram.soloist-ai.com
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_APP}
       mini-app:
         url: https://t.me/solo_level_bot/app

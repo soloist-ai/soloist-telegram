@@ -79,11 +79,6 @@
       <artifactId>solo-leveling-telegram-model</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.sleepkqq</groupId>
-      <artifactId>solo-leveling-proto</artifactId>
-      <version>${solo-leveling-lib.version}</version>
-    </dependency>
 
     <!-- redis -->
     <dependency>

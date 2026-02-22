@@ -2,7 +2,6 @@ package com.sleepkqq.sololeveling.telegram.bot.callback.impl
 
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.grpc.client.PlayerApi
-import com.sleepkqq.sololeveling.telegram.bot.mapper.ProtoMapper
 import com.sleepkqq.sololeveling.telegram.bot.model.UserRole
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
@@ -17,8 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 class DeprecateTasksByTopicConfirmCallback(
 	private val userSessionService: UserSessionService,
 	private val playerApi: PlayerApi,
-	private val telegramMessageFactory: TelegramMessageFactory,
-	private val protoMapper: ProtoMapper
+	private val telegramMessageFactory: TelegramMessageFactory
 ) : Callback {
 
 	override val action: CallbackAction = CallbackAction.DEPRECATE_TASKS_BY_TOPIC_CONFIRM
@@ -33,7 +31,7 @@ class DeprecateTasksByTopicConfirmCallback(
 
 		userSessionService.idleState(userId)
 
-		val effectedRows = playerApi.deprecateTasksByTopic(protoMapper.map(state.taskTopic()))
+		val effectedRows = playerApi.deprecateTasksByTopic(state.taskTopic())
 
 		return telegramMessageFactory.editMessageText(
 			chatId = userId,
