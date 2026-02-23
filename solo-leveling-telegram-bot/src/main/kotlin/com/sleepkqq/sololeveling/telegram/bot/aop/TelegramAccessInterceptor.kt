@@ -2,8 +2,10 @@ package com.sleepkqq.sololeveling.telegram.bot.aop
 
 import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
+import com.sleepkqq.sololeveling.telegram.bot.callback.value
 import com.sleepkqq.sololeveling.telegram.bot.command.Command
-import com.sleepkqq.sololeveling.telegram.bot.model.UserRole
+import com.sleepkqq.sololeveling.telegram.bot.command.value
+import com.sleepkqq.sololeveling.telegram.bot.extensions.command
 import com.sleepkqq.sololeveling.telegram.bot.service.auth.AuthService
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.Aspect
@@ -25,17 +27,17 @@ class TelegramAccessInterceptor(
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
-	private val commandsMap: Map<String, Command> = commands.associateBy { it.command }
-	private val callbacksMap: Map<String, Callback> = callbacks.associateBy { it.action.action }
+	private val commandsMap: Map<String, Command> = commands.associateBy { it.value() }
+	private val callbacksMap: Map<String, Callback> = callbacks.associateBy { it.value().action }
 
 	@Before("execution(* com.sleepkqq.sololeveling.telegram.bot.handler.CommandHandler.handle(..))")
 	fun checkCommandAccess(joinPoint: JoinPoint) {
 		val message = joinPoint.args.firstOrNull() as? Message ?: return
-		val command = commandsMap[message.text.split(" ").first()] ?: return
+		val command = commandsMap[message.command()] ?: return
 
-		log.info("Command={} called by userId={}", command.command, UserContextHolder.getUserId())
+		log.info("Command=/{} called by userId={}", command.value(), UserContextHolder.getUserId())
 
-		checkAccess(command.requiredRole)
+		checkAccess { authService.hasAccess(command) }
 	}
 
 	@Before("execution(* com.sleepkqq.sololeveling.telegram.bot.handler.CallbackQueryHandler.handle(..))")
@@ -45,15 +47,12 @@ class TelegramAccessInterceptor(
 
 		log.info("Callback={} called by userId={}", callbackQuery.data, UserContextHolder.getUserId())
 
-		checkAccess(callback.requiredRole)
+		checkAccess { authService.hasAccess(callback) }
 	}
 
-	private fun checkAccess(requiredRole: UserRole) {
-		if (requiredRole == UserRole.USER) return
-
-		if (!authService.hasRole(requiredRole)) {
-			val userId = UserContextHolder.getUserId()!!
-			throw AuthorizationDeniedException("Access denied for userId=$userId, role=$requiredRole required")
+	private fun checkAccess(hasAccess: () -> Boolean) {
+		if (!hasAccess()) {
+			throw AuthorizationDeniedException("Access denied for userId=${UserContextHolder.getUserId()}")
 		}
 	}
 }

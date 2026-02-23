@@ -57,6 +57,28 @@ app:
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_DEV}
       mini-app:
         url: https://t.me/solo_leveling_dev_bot/app
+      commands:
+        users-stats:
+          role: MANAGER
+        deprecate-all-tasks:
+          role: DEVELOPER
+        deprecate-tasks-by-topic:
+          role: DEVELOPER
+        reset-player:
+          role: DEVELOPER
+        send-newsletter:
+          role: ADMIN
+        transfer:
+          enabled: false
+      callbacks:
+        deprecate-all-tasks-confirm:
+          role: DEVELOPER
+        deprecate-tasks-by-topic-confirm:
+          role: DEVELOPER
+        reset-player-confirm:
+          role: DEVELOPER
+        send-newsletter-confirm:
+          role: ADMIN
     rate-limit:
       global: 25
       per-chat: 1

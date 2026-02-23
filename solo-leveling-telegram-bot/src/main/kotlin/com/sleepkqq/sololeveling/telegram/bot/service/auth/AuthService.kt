@@ -1,6 +1,12 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.auth
 
 import com.sleepkqq.sololeveling.config.interceptor.UserContextHolder
+import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
+import com.sleepkqq.sololeveling.telegram.bot.callback.value
+import com.sleepkqq.sololeveling.telegram.bot.command.Command
+import com.sleepkqq.sololeveling.telegram.bot.command.value
+import com.sleepkqq.sololeveling.telegram.bot.config.properties.TelegramBotProperties
+import com.sleepkqq.sololeveling.telegram.bot.extensions.toKebabCase
 import com.sleepkqq.sololeveling.telegram.bot.mapper.ProtoMapper
 import com.sleepkqq.sololeveling.telegram.bot.model.UserRole
 import com.sleepkqq.sololeveling.telegram.bot.service.user.impl.UserInfoService
@@ -18,7 +24,8 @@ import org.telegram.telegrambots.meta.api.objects.User as TgUser
 class AuthService(
 	private val userInfoService: UserInfoService,
 	private val protoMapper: ProtoMapper,
-	private val roleHierarchy: RoleHierarchy
+	private val roleHierarchy: RoleHierarchy,
+	private val telegramBotProperties: TelegramBotProperties
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
@@ -67,5 +74,20 @@ class AuthService(
 		return roleHierarchy
 			.getReachableGrantedAuthorities(user.authorities)
 			.any { it.authority == role.name }
+	}
+
+	fun hasAccess(command: Command, targetRole: UserRole? = null): Boolean {
+		val role = telegramBotProperties.commands[command.value().toKebabCase()]
+			?.role
+			?: UserRole.USER
+		return targetRole?.let { it == role } ?: hasRole(role)
+	}
+
+	fun hasAccess(callback: Callback, targetRole: UserRole? = null): Boolean {
+		val commandText = callback.value()
+		val role = telegramBotProperties.callbacks[commandText]
+			?.role
+			?: UserRole.USER
+		return targetRole?.let { it == role } ?: hasRole(role)
 	}
 }

@@ -1,9 +1,12 @@
 package com.sleepkqq.sololeveling.telegram.bot.config
 
 import com.sleepkqq.sololeveling.telegram.bot.command.Command
+import com.sleepkqq.sololeveling.telegram.bot.command.description
+import com.sleepkqq.sololeveling.telegram.bot.command.value
 import com.sleepkqq.sololeveling.telegram.bot.config.properties.TelegramBotProperties
 import com.sleepkqq.sololeveling.telegram.bot.dispatcher.UpdateDispatcher
 import com.sleepkqq.sololeveling.telegram.bot.model.UserRole
+import com.sleepkqq.sololeveling.telegram.bot.service.auth.AuthService
 import com.sleepkqq.sololeveling.telegram.bot.service.localization.impl.I18nService
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
@@ -14,7 +17,7 @@ import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand
 import org.telegram.telegrambots.meta.generics.TelegramClient
 import org.telegram.telegrambots.webhook.starter.SpringTelegramWebhookBot
-import java.util.Locale
+import java.util.*
 
 @Configuration
 class TelegramBotConfig(
@@ -22,7 +25,8 @@ class TelegramBotConfig(
 	private val updateDispatcher: UpdateDispatcher,
 	private val commands: List<Command>,
 	private val telegramClient: TelegramClient,
-	private val i18nService: I18nService
+	private val i18nService: I18nService,
+	private val authService: AuthService
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
@@ -63,11 +67,12 @@ class TelegramBotConfig(
 	}
 
 	private fun registerCommands() {
-		val botCommands = commands.filter { it.requiredRole == UserRole.USER }
+		val botCommands = commands
+			.filter { authService.hasAccess(it, UserRole.USER) }
 			.map {
 				BotCommand(
-					it.command,
-					i18nService.getMessage(it.description, locale = Locale.ENGLISH)
+					it.value(),
+					i18nService.getMessage(it.description(), locale = Locale.ENGLISH)
 				)
 			}
 
