@@ -40,12 +40,12 @@ class TelegramUpdateInterceptor(
 			return telegramMessageFactory.sendMessage(userId!!, ErrorCode.ACCESS_DENIED)
 
 		} catch (ex: Exception) {
-			log.error("Error processing telegram updateId={}, userId={}", update.updateId, userId, ex)
+			log.error("Error processing telegram updateId={} by userId={}", update.updateId, userId, ex)
 			return null
 
 		} finally {
 			val elapsed = System.currentTimeMillis() - start
-			log.info("Processed updateId={}, userId={}, elapsed={}ms", update.updateId, userId, elapsed)
+			log.info("Processed updateId={} by userId={} in {}ms", update.updateId, userId, elapsed)
 			clearContexts()
 		}
 	}

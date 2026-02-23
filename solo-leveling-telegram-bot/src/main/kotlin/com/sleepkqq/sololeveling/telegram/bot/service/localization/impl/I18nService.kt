@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.service.localization.impl
 
 import com.sleepkqq.sololeveling.telegram.keyboard.Keyboard
-import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction
+import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardData
 import com.sleepkqq.sololeveling.telegram.localization.LocalizationCode
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
@@ -33,24 +33,26 @@ class I18nService(
 
 	fun buildKeyboard(
 		keyboard: Keyboard,
-		buttonsPerRow: Int = keyboard.actions.size,
+		buttonsPerRow: Int = keyboard.data.size,
 		locale: Locale? = null
 	): InlineKeyboardMarkup {
-		val buttons = keyboard.actions.map { createButton(it, locale) }
+		val buttons = keyboard.data.map { createButton(it, locale) }
 		val rows = buttons.chunked(buttonsPerRow).map { InlineKeyboardRow(it) }
 		return InlineKeyboardMarkup(rows)
 	}
 
-	private fun createButton(action: KeyboardAction, locale: Locale? = null): InlineKeyboardButton =
-		when (action) {
-			is KeyboardAction.Callback -> InlineKeyboardButton.builder()
-				.text(getMessage(action.callbackAction.localizationCode, locale = locale))
-				.callbackData(action.callbackAction.action)
-				.build()
-
-			is KeyboardAction.Url -> InlineKeyboardButton.builder()
-				.text(getMessage(action.localizationCode, locale = locale))
-				.url(environment.getRequiredProperty(action.urlProperty))
-				.build()
-		}
+	private fun createButton(action: KeyboardData, locale: Locale? = null): InlineKeyboardButton {
+		val button = action.button
+		return InlineKeyboardButton.builder()
+			.text(getMessage(button.localizationCode, locale = locale))
+			.apply {
+				when (action) {
+					is KeyboardData.Callback -> callbackData(action.callbackData.data)
+					is KeyboardData.Url -> url(environment.getRequiredProperty(action.urlProperty))
+				}
+				button.customEmojiId?.let { iconCustomEmojiId(it) }
+				button.style?.let { style(it.name.lowercase()) }
+			}
+			.build()
+	}
 }

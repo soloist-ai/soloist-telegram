@@ -53,7 +53,7 @@
     <spring-grpc.version>0.11.0</spring-grpc.version>
 
     <!-- telegrambots -->
-    <telegrambots.version>9.3.0</telegrambots.version>
+    <telegrambots.version>9.4.0</telegrambots.version>
 
     <!-- mapstruct -->
     <mapstruct.version>1.6.3</mapstruct.version>

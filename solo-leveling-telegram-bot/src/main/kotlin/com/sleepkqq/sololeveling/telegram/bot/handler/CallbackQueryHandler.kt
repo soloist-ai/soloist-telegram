@@ -13,7 +13,7 @@ class CallbackQueryHandler(
 	private val userSessionService: UserSessionService
 ) {
 
-	private val callbacksMap = callbacks.associateBy { it.value().action }
+	private val callbacksMap = callbacks.associateBy { it.value().data }
 
 	fun handle(callbackQuery: CallbackQuery): BotApiMethod<*>? {
 		val userId = callbackQuery.from.id

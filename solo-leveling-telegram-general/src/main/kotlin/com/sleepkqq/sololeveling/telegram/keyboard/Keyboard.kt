@@ -1,47 +1,46 @@
 package com.sleepkqq.sololeveling.telegram.keyboard
 
-import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction.Callback
-import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardAction.Url
-import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
-import com.sleepkqq.sololeveling.telegram.localization.ButtonCode
+import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardData.Callback
+import com.sleepkqq.sololeveling.telegram.keyboard.KeyboardData.Url
+import com.sleepkqq.sololeveling.telegram.callback.CallbackData
 
 enum class Keyboard(
-	val actions: List<KeyboardAction>
+	val data: List<KeyboardData>
 ) {
 
 	INTERRUPT_CONFIRMATION(
 		listOf(
-			Callback(CallbackAction.INTERRUPT_CONFIRM),
-			Callback(CallbackAction.INTERRUPT_CANCEL)
+			Callback(CallbackData.INTERRUPT_CANCEL),
+			Callback(CallbackData.INTERRUPT_CONFIRM)
 		)
 	),
 	DEPRECATE_ALL_TASKS_CONFIRMATION(
 		listOf(
-			Callback(CallbackAction.DEPRECATE_ALL_TASKS_CONFIRM),
-			Callback(CallbackAction.IDLE_CANCEL)
+			Callback(CallbackData.IDLE_CANCEL),
+			Callback(CallbackData.DEPRECATE_ALL_TASKS_CONFIRM)
 		)
 	),
 	DEPRECATE_TASKS_BY_TOPIC_CONFIRMATION(
 		listOf(
-			Callback(CallbackAction.DEPRECATE_TASKS_BY_TOPIC_CONFIRM),
-			Callback(CallbackAction.IDLE_CANCEL)
+			Callback(CallbackData.IDLE_CANCEL),
+			Callback(CallbackData.DEPRECATE_TASKS_BY_TOPIC_CONFIRM)
 		)
 	),
 	RESET_PLAYER_CONFIRMATION(
 		listOf(
-			Callback(CallbackAction.RESET_PLAYER_CONFIRM),
-			Callback(CallbackAction.IDLE_CANCEL)
+			Callback(CallbackData.IDLE_CANCEL),
+			Callback(CallbackData.RESET_PLAYER_CONFIRM)
 		)
 	),
 	SEND_NEWSLETTER_CONFIRMATION(
 		listOf(
-			Callback(CallbackAction.SEND_NEWSLETTER_CONFIRM),
-			Callback(CallbackAction.IDLE_CANCEL)
+			Callback(CallbackData.IDLE_CANCEL),
+			Callback(CallbackData.SEND_NEWSLETTER_CONFIRM)
 		)
 	),
 	MINI_APP_LINK(
 		listOf(
-			Url(ButtonCode.MINI_APP_LINK, "app.telegram.bot.mini-app.url")
+			Url(Button.MINI_APP_LINK, "app.telegram.bot.mini-app.url")
 		)
 	)
 }

@@ -28,7 +28,7 @@ class TelegramAccessInterceptor(
 
 	private val log = LoggerFactory.getLogger(javaClass)
 	private val commandsMap: Map<String, Command> = commands.associateBy { it.value() }
-	private val callbacksMap: Map<String, Callback> = callbacks.associateBy { it.value().action }
+	private val callbacksMap: Map<String, Callback> = callbacks.associateBy { it.value().data }
 
 	@Before("execution(* com.sleepkqq.sololeveling.telegram.bot.handler.CommandHandler.handle(..))")
 	fun checkCommandAccess(joinPoint: JoinPoint) {

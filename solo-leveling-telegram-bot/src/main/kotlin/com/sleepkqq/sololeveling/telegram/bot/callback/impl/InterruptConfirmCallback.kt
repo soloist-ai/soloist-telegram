@@ -4,12 +4,12 @@ import com.sleepkqq.sololeveling.telegram.bot.annotation.TelegramCallback
 import com.sleepkqq.sololeveling.telegram.bot.callback.Callback
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFactory
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
-import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
+import com.sleepkqq.sololeveling.telegram.callback.CallbackData
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 
-@TelegramCallback(CallbackAction.INTERRUPT_CONFIRM)
+@TelegramCallback(CallbackData.INTERRUPT_CONFIRM)
 class InterruptConfirmCallback(
 	private val userSessionService: UserSessionService,
 	private val telegramMessageFactory: TelegramMessageFactory

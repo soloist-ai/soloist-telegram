@@ -8,7 +8,7 @@ import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageFac
 import com.sleepkqq.sololeveling.telegram.bot.service.message.TelegramMessageSender
 import com.sleepkqq.sololeveling.telegram.bot.service.user.UserSessionService
 import com.sleepkqq.sololeveling.telegram.bot.service.user.impl.UserInfoService
-import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
+import com.sleepkqq.sololeveling.telegram.callback.CallbackData
 import com.sleepkqq.sololeveling.telegram.image.Image
 import com.sleepkqq.sololeveling.telegram.localization.ErrorCode
 import com.sleepkqq.sololeveling.telegram.localization.InfoCode
@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 import java.util.*
 
-@TelegramCallback(CallbackAction.RESET_PLAYER_CONFIRM)
+@TelegramCallback(CallbackData.RESET_PLAYER_CONFIRM)
 class ResetPlayerConfirmCallback(
 	private val userSessionService: UserSessionService,
 	private val playerApi: PlayerApi,

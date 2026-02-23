@@ -1,7 +1,7 @@
 package com.sleepkqq.sololeveling.telegram.bot.callback
 
 import com.sleepkqq.sololeveling.telegram.bot.annotation.TelegramCallback
-import com.sleepkqq.sololeveling.telegram.callback.CallbackAction
+import com.sleepkqq.sololeveling.telegram.callback.CallbackData
 import com.sleepkqq.sololeveling.telegram.model.entity.user.UserSession
 import org.springframework.aop.support.AopUtils
 import org.springframework.core.annotation.AnnotationUtils
@@ -14,9 +14,9 @@ interface Callback {
 	fun handle(callbackQuery: CallbackQuery, session: UserSession): BotApiMethod<*>?
 }
 
-private val callbackValueCache = ConcurrentHashMap<Class<*>, CallbackAction>()
+private val callbackValueCache = ConcurrentHashMap<Class<*>, CallbackData>()
 
-fun Callback.value(): CallbackAction =
+fun Callback.value(): CallbackData =
 	callbackValueCache.getOrPut(AopUtils.getTargetClass(this)) {
 		AnnotationUtils.findAnnotation(AopUtils.getTargetClass(this), TelegramCallback::class.java)
 			?.value
