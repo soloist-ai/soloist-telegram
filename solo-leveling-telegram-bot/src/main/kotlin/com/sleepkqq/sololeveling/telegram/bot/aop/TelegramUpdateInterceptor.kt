@@ -28,11 +28,12 @@ class TelegramUpdateInterceptor(
 
 	@Around("execution(* com.sleepkqq.sololeveling.telegram.bot.dispatcher.UpdateDispatcher.dispatch(..)) && args(update)")
 	fun interceptUpdateDispatch(pjp: ProceedingJoinPoint, update: Update): BotApiMethod<*>? {
-		authService.login(update)
 		val userId = UserContextHolder.getUserId()
 		val start = System.currentTimeMillis()
 
 		try {
+			authService.login(update)
+
 			return pjp.proceed() as? BotApiMethod<*>
 
 		} catch (e: AuthorizationDeniedException) {

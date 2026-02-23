@@ -23,13 +23,13 @@ class DeprecateAllTasksConfirmCallback(
 
 		userSessionService.idleState(userId)
 
-		val effectedRows = playerApi.deprecateAllTasks()
+		val affectedRows = playerApi.deprecateAllTasks()
 
 		return telegramMessageFactory.editMessageText(
 			chatId = userId,
 			messageId = messageId,
 			localized = session.state().onExitLocalized()!!,
-			params = listOf(effectedRows),
+			params = listOf(affectedRows),
 		)
 	}
 }

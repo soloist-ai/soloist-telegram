@@ -33,7 +33,7 @@ class TelegramAccessInterceptor(
 	@Before("execution(* com.sleepkqq.sololeveling.telegram.bot.handler.CommandHandler.handle(..))")
 	fun checkCommandAccess(joinPoint: JoinPoint) {
 		val message = joinPoint.args.firstOrNull() as? Message ?: return
-		val command = commandsMap[message.command()] ?: return
+		val command = message.command()?.let { commandsMap[it] } ?: return
 
 		log.info("Command=/{} called by userId={}", command.value(), UserContextHolder.getUserId())
 

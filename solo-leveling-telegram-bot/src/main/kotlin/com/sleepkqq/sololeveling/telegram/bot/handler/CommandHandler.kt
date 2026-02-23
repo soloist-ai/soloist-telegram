@@ -22,7 +22,7 @@ class CommandHandler(
 	private val commandsMap: Map<String, Command> = commands.associateBy { it.value() }
 
 	fun handle(message: Message): BotApiMethod<*>? {
-		val command = commandsMap[message.command()]
+		val command = message.command()?.let { commandsMap[it] }
 			?: return telegramMessageFactory.sendMessage(message.chatId, CommandCode.UNKNOWN)
 
 		return when (command) {

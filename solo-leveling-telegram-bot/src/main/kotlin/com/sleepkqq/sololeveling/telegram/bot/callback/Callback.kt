@@ -16,9 +16,10 @@ interface Callback {
 
 private val callbackValueCache = ConcurrentHashMap<Class<*>, CallbackData>()
 
-fun Callback.value(): CallbackData =
-	callbackValueCache.getOrPut(AopUtils.getTargetClass(this)) {
-		AnnotationUtils.findAnnotation(AopUtils.getTargetClass(this), TelegramCallback::class.java)
+fun Callback.value(): CallbackData = AopUtils.getTargetClass(this).let {
+	callbackValueCache.getOrPut(it) {
+		AnnotationUtils.findAnnotation(it, TelegramCallback::class.java)
 			?.value
 			?: error("${javaClass.simpleName} missing @TelegramCallback")
 	}
+}

@@ -11,16 +11,18 @@ interface Command
 private val commandValueCache = ConcurrentHashMap<Class<*>, String>()
 private val commandDescriptionCache = ConcurrentHashMap<Class<*>, CommandDescriptionCode>()
 
-fun Command.value(): String =
-	commandValueCache.getOrPut(AopUtils.getTargetClass(this)) {
-		AnnotationUtils.findAnnotation(AopUtils.getTargetClass(this), TelegramCommand::class.java)
+fun Command.value(): String = AopUtils.getTargetClass(this).let {
+	commandValueCache.getOrPut(it) {
+		AnnotationUtils.findAnnotation(it, TelegramCommand::class.java)
 			?.value
 			?: error("${javaClass.simpleName} missing @TelegramCommand")
 	}
+}
 
-fun Command.description(): CommandDescriptionCode =
-	commandDescriptionCache.getOrPut(AopUtils.getTargetClass(this)) {
-		AnnotationUtils.findAnnotation(AopUtils.getTargetClass(this), TelegramCommand::class.java)
+fun Command.description(): CommandDescriptionCode = AopUtils.getTargetClass(this).let {
+	commandDescriptionCache.getOrPut(it) {
+		AnnotationUtils.findAnnotation(it, TelegramCommand::class.java)
 			?.description
 			?: error("${javaClass.simpleName} missing @TelegramCommand")
 	}
+}

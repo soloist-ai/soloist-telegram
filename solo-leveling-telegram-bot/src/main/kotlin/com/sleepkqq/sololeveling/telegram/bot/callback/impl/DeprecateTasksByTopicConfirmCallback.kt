@@ -27,13 +27,13 @@ class DeprecateTasksByTopicConfirmCallback(
 
 		userSessionService.idleState(userId)
 
-		val effectedRows = playerApi.deprecateTasksByTopic(state.taskTopic())
+		val affectedRows = playerApi.deprecateTasksByTopic(state.taskTopic())
 
 		return telegramMessageFactory.editMessageText(
 			chatId = userId,
 			messageId = messageId,
 			localized = state.onExitLocalized()!!,
-			params = listOf(effectedRows)
+			params = listOf(affectedRows)
 		)
 	}
 }
