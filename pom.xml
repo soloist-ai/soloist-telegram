@@ -47,7 +47,7 @@
     <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
 
     <!-- soloist -->
-    <soloist-lib.version>2.0.0</soloist-lib.version>
+    <soloist-lib.version>2.0.1</soloist-lib.version>
 
     <!-- grpc -->
     <spring-grpc.version>0.11.0</spring-grpc.version>
