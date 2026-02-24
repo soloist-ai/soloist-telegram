@@ -20,7 +20,7 @@ RUN chmod +x ./mvnw && \
 FROM eclipse-temurin:25-jre-alpine
 
 # Копируем собранный JAR
-COPY --from=build /usr/src/app/solo-leveling-telegram-service/target/*.jar /app/solo-leveling-telegram.jar
+COPY --from=build /usr/src/app/soloist-telegram-service/target/*.jar /app/soloist-telegram.jar
 
 # Безопасность: создаём пользователя
 RUN adduser -D myuser && \
@@ -35,4 +35,4 @@ CMD ["java", \
     "--enable-native-access=ALL-UNNAMED", \
     "--add-opens", "java.base/java.lang=ALL-UNNAMED", \
     "-Dspring.profiles.active=prod", \
-    "-jar", "solo-leveling-telegram.jar"]
+    "-jar", "soloist-telegram.jar"]

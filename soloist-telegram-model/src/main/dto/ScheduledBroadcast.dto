@@ -1,0 +1,10 @@
+export com.soloist.telegram.model.entity.broadcast.ScheduledBroadcast
+  -> package com.soloist.telegram.model.entity.broadcast.dto
+
+ScheduledBroadcastView {
+  #allScalars
+
+  messages {
+    #allScalars
+  }
+}

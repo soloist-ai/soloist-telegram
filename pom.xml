@@ -10,16 +10,16 @@
     <version>3.5.7</version>
   </parent>
 
-  <groupId>com.sleepkqq</groupId>
-  <artifactId>solo-leveling-telegram</artifactId>
+  <groupId>com.soloist</groupId>
+  <artifactId>soloist-telegram</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <modules>
-    <module>solo-leveling-telegram-service</module>
-    <module>solo-leveling-telegram-bot</module>
-    <module>solo-leveling-telegram-model</module>
-    <module>solo-leveling-telegram-general</module>
+    <module>soloist-telegram-service</module>
+    <module>soloist-telegram-bot</module>
+    <module>soloist-telegram-model</module>
+    <module>soloist-telegram-general</module>
   </modules>
 
   <dependencyManagement>
@@ -46,8 +46,8 @@
     <kotlin.code.style>official</kotlin.code.style>
     <kotlinx-coroutines.version>1.10.2</kotlinx-coroutines.version>
 
-    <!-- solo leveling -->
-    <solo-leveling-lib.version>1.6.7</solo-leveling-lib.version>
+    <!-- soloist -->
+    <soloist-lib.version>2.0.0</soloist-lib.version>
 
     <!-- grpc -->
     <spring-grpc.version>0.11.0</spring-grpc.version>

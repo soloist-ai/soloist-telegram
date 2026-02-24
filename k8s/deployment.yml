@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: solo-leveling-telegram
+  name: soloist-telegram
 spec:
   replicas: ${REPLICAS}
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: solo-leveling-telegram
+      app: soloist-telegram
   template:
     metadata:
       labels:
-        app: solo-leveling-telegram
+        app: soloist-telegram
       annotations:
-        commit.sha: "${DEPLOY_IMAGE}"
+        commit.sha: "${GIT_COMMIT_SHA}"
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
         prometheus.io/path: "/actuator/prometheus"

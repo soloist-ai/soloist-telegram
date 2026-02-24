@@ -1,1 +1,1 @@
-**tuna http 10005 --subdomain=solo-leveling-telegram**
+**tuna http 10005 --subdomain=soloist-telegram**

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/soloist
+  data:
+    redis:
+      host: redis
+app:
+  grpc:
+    services:
+      player:
+        host: soloist-player
+        port: 90
+  telegram:
+    bot:
+      token: ${TELEGRAM_BOT_TOKEN_APP}
+      webhook:
+        host: https://telegram.soloist-ai.com
+        secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_APP}
+      mini-app:
+        url: https://t.me/solo_level_bot/app
+server:
+  port: 8080
