@@ -1,7 +1,7 @@
 package com.soloist.telegram.bot.config.cache
 
 import com.google.protobuf.MessageLite
-import com.soloist.proto.user.GetUserAdditionalInfoResponse
+import com.soloist.proto.user.UserView
 import com.soloist.telegram.bot.config.properties.RedisCacheProperties
 import io.lettuce.core.RedisClient
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
@@ -32,7 +32,7 @@ class RedisConfig(
 					RedisCacheProperties.CacheKey.USER_INFO -> createProtoCacheConfig(
 						ttl = config.ttl,
 						nullable = config.nullable,
-						serializer = ProtobufRedisSerializer(GetUserAdditionalInfoResponse.getDefaultInstance())
+						serializer = ProtobufRedisSerializer(UserView.getDefaultInstance())
 					)
 				}
 			}

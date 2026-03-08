@@ -1,6 +1,6 @@
 package com.soloist.telegram.model.entity.user.state.task;
 
-import com.soloist.proto.player.TaskTopic;
+import com.soloist.proto.common.TaskTopic;
 import com.soloist.telegram.keyboard.Keyboard;
 import com.soloist.telegram.localization.LocalizationCode;
 import com.soloist.telegram.localization.StateCode;

@@ -2,7 +2,7 @@ package com.soloist.telegram.bot.callback.impl
 
 import com.soloist.telegram.bot.annotation.TelegramCallback
 import com.soloist.telegram.bot.callback.Callback
-import com.soloist.telegram.bot.grpc.client.PlayerApi
+import com.soloist.telegram.bot.client.PlayerClient
 import com.soloist.telegram.bot.service.localization.impl.PhotoSource
 import com.soloist.telegram.bot.service.message.TelegramMessageFactory
 import com.soloist.telegram.bot.service.message.TelegramMessageSender
@@ -24,7 +24,7 @@ import java.util.*
 @TelegramCallback(CallbackData.RESET_PLAYER_CONFIRM)
 class ResetPlayerConfirmCallback(
 	private val userSessionService: UserSessionService,
-	private val playerApi: PlayerApi,
+	private val playerClient: PlayerClient,
 	private val userInfoService: UserInfoService,
 	private val telegramMessageFactory: TelegramMessageFactory,
 	private val telegramMessageSender: TelegramMessageSender
@@ -51,7 +51,7 @@ class ResetPlayerConfirmCallback(
 		log.info("Resetting player={}, requestedBy={}", resetUserId, userId)
 
 		try {
-			playerApi.resetPlayer(resetUserId)
+			playerClient.resetPlayer(resetUserId)
 
 		} catch (e: StatusRuntimeException) {
 			if (e.status.code == Status.Code.NOT_FOUND) {
@@ -81,7 +81,7 @@ class ResetPlayerConfirmCallback(
 	}
 
 	private fun notifyResetPlayer(resetUserId: Long) {
-		val tag = userInfoService.getUserAdditionalInfo(resetUserId).locale.tag
+		val tag = userInfoService.getUserInfo(resetUserId).locale.tag
 		telegramMessageSender.send(
 			telegramMessageFactory.sendPhoto(
 				chatId = resetUserId,

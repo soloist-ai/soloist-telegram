@@ -1,9 +1,9 @@
 package com.soloist.telegram.bot.service.user.impl
 
-import com.soloist.proto.user.GetUserAdditionalInfoResponse
+import com.soloist.proto.common.UserRole
 import com.soloist.proto.user.UserLocale
-import com.soloist.proto.user.UserRole
-import com.soloist.telegram.bot.grpc.client.UserApi
+import com.soloist.proto.user.UserView
+import com.soloist.telegram.bot.client.UserClient
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import org.slf4j.LoggerFactory
@@ -15,7 +15,7 @@ import java.util.Locale
 
 @Service
 class UserInfoService(
-	private val userApi: UserApi
+	private val userClient: UserClient
 ) {
 
 	private val log = LoggerFactory.getLogger(javaClass)
@@ -29,13 +29,10 @@ class UserInfoService(
 		retryFor = [StatusRuntimeException::class],
 		maxAttempts = 3
 	)
-	fun getUserAdditionalInfo(
-		userId: Long,
-		telegramLocaleTag: String? = null
-	): GetUserAdditionalInfoResponse {
+	fun getUserInfo(userId: Long, telegramLocaleTag: String? = null): UserView {
 		return try {
 
-			userApi.getUserAdditionalInfo()
+			userClient.getUser(userId)
 
 		} catch (ex: StatusRuntimeException) {
 			when (ex.status.code) {
@@ -61,15 +58,13 @@ class UserInfoService(
 		ex: StatusRuntimeException,
 		userId: Long,
 		telegramLocaleTag: String?
-	): GetUserAdditionalInfoResponse {
+	): UserView {
 		log.warn("Failed to fetch user info for userId={} after retries, using defaults", userId, ex)
 		return additionalInfoResponse(telegramLocaleTag)
 	}
 
-	private fun additionalInfoResponse(
-		localeTag: String? = Locale.ENGLISH.language
-	): GetUserAdditionalInfoResponse =
-		GetUserAdditionalInfoResponse.newBuilder()
+	private fun additionalInfoResponse(localeTag: String? = Locale.ENGLISH.language): UserView =
+		UserView.newBuilder()
 			.addRoles(UserRole.USER)
 			.setLocale(
 				UserLocale.newBuilder()
@@ -77,5 +72,4 @@ class UserInfoService(
 					.setIsManual(false)
 			)
 			.build()
-
 }

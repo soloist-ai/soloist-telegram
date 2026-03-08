@@ -31,14 +31,16 @@ jobs:
           rm -f ./settings-template.xml
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'temurin'
+          cache: "maven"
 
       - name: Build project with Maven
         run: |
-          mvn clean install -s ./settings.xml
+          chmod +x ./mvnw && \
+          ./mvnw clean install -s ./settings.xml
 
       - name: Clean up temporary files (security)
         run: |

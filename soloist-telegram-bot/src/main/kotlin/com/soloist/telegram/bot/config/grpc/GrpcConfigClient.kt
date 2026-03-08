@@ -3,6 +3,7 @@ package com.soloist.telegram.bot.config.grpc
 import com.soloist.proto.config.DefaultGrpcClientConfig
 import com.soloist.proto.config.interceptor.UserClientInterceptor
 import com.soloist.proto.player.PlayerServiceGrpc
+import com.soloist.proto.task.TaskServiceGrpc
 import com.soloist.proto.user.UserServiceGrpc
 import com.soloist.telegram.bot.config.properties.GrpcPlayerServiceProperties
 import io.grpc.ClientInterceptor
@@ -29,5 +30,10 @@ class GrpcConfigClient(
 	@Bean
 	fun playerServiceBlockingStub(): PlayerServiceGrpc.PlayerServiceBlockingStub =
 		PlayerServiceGrpc.newBlockingStub(playerManagedChannel())
+			.withInterceptors(userClientInterceptor())
+
+	@Bean
+	fun taskServiceBlockingStub(): TaskServiceGrpc.TaskServiceBlockingStub =
+		TaskServiceGrpc.newBlockingStub(playerManagedChannel())
 			.withInterceptors(userClientInterceptor())
 }

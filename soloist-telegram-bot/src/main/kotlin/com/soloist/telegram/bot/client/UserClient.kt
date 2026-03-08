@@ -1,26 +1,22 @@
-package com.soloist.telegram.bot.grpc.client
+package com.soloist.telegram.bot.client
 
 import com.google.protobuf.Empty
-import com.soloist.proto.player.RequestPaging
-import com.soloist.proto.user.GetUserAdditionalInfoResponse
+import com.soloist.proto.common.RequestPaging
 import com.soloist.proto.user.GetUserRequest
-import com.soloist.proto.user.GetUserResponse
 import com.soloist.proto.user.GetUsersRequest
 import com.soloist.proto.user.GetUsersResponse
 import com.soloist.proto.user.GetUsersStatsResponse
 import com.soloist.proto.user.UserServiceGrpc.UserServiceBlockingStub
+import com.soloist.proto.user.UserView
 import org.springframework.stereotype.Service
 
 @Service
-class UserApi(
+class UserClient(
 	private val userStub: UserServiceBlockingStub
 ) {
 
-	fun getUser(id: Long): GetUserResponse =
-		userStub.getUser(GetUserRequest.newBuilder().setUserId(id).build())
-
-	fun getUserAdditionalInfo(): GetUserAdditionalInfoResponse =
-		userStub.getUserAdditionalInfo(Empty.newBuilder().build())
+	fun getUser(id: Long): UserView =
+		userStub.getUser(GetUserRequest.newBuilder().setUserId(id).build()).user
 
 	fun getUsersStats(): GetUsersStatsResponse =
 		userStub.getUsersStats(Empty.newBuilder().build())

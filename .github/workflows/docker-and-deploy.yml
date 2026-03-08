@@ -54,6 +54,8 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/soloist-telegram:latest
             ghcr.io/${{ github.repository_owner }}/soloist-telegram:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v4

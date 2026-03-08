@@ -39,7 +39,7 @@ class AuthService(
 		val userId = telegramUser.id
 		UserContextHolder.setUserId(userId)
 
-		val additionalUserInfo = userInfoService.getUserAdditionalInfo(
+		val additionalUserInfo = userInfoService.getUserInfo(
 			userId,
 			telegramUser.languageCode
 		)
