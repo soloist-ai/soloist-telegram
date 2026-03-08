@@ -1,7 +1,7 @@
 package com.soloist.telegram.bot.service.broadcast.impl
 
 import com.soloist.telegram.bot.event.RunBroadcastEvent
-import com.soloist.telegram.bot.grpc.client.UserApi
+import com.soloist.telegram.bot.client.UserClient
 import com.soloist.telegram.bot.service.broadcast.ScheduledBroadcastService
 import com.soloist.telegram.model.entity.Immutables
 import com.soloist.telegram.model.entity.broadcast.enums.BroadcastStatus
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 class BroadcastRunner(
 	private val broadcastExecutor: BroadcastExecutor,
 	private val scheduledBroadcastService: ScheduledBroadcastService,
-	private val userApi: UserApi
+	private val userClient: UserClient
 ) {
 
 	private companion object {
@@ -46,7 +46,7 @@ class BroadcastRunner(
 
 		try {
 			do {
-				val response = userApi.getUsers(currentPage, PAGE_SIZE)
+				val response = userClient.getUsers(currentPage, PAGE_SIZE)
 
 				val result = broadcastExecutor.execute(broadcast, response.usersList)
 				total += result.total
@@ -54,7 +54,7 @@ class BroadcastRunner(
 				totalFailed += result.totalFailed
 
 				currentPage++
-			} while (response.paging.hasMore)
+			} while (currentPage < response.paging.totalPageCount)
 
 			status = BroadcastStatus.COMPLETED
 

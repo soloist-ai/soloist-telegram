@@ -1,7 +1,7 @@
 package com.soloist.telegram.bot.mapper
 
+import com.soloist.proto.common.UserRole
 import com.soloist.proto.user.UserLocale
-import com.soloist.proto.user.UserRole
 import org.mapstruct.*
 import java.util.Locale
 

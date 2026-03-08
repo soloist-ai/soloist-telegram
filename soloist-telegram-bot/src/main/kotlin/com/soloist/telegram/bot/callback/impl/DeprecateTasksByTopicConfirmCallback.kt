@@ -2,7 +2,7 @@ package com.soloist.telegram.bot.callback.impl
 
 import com.soloist.telegram.bot.annotation.TelegramCallback
 import com.soloist.telegram.bot.callback.Callback
-import com.soloist.telegram.bot.grpc.client.PlayerApi
+import com.soloist.telegram.bot.client.TaskClient
 import com.soloist.telegram.bot.service.message.TelegramMessageFactory
 import com.soloist.telegram.bot.service.user.UserSessionService
 import com.soloist.telegram.callback.CallbackData
@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 @TelegramCallback(CallbackData.DEPRECATE_TASKS_BY_TOPIC_CONFIRM)
 class DeprecateTasksByTopicConfirmCallback(
 	private val userSessionService: UserSessionService,
-	private val playerApi: PlayerApi,
+	private val taskClient: TaskClient,
 	private val telegramMessageFactory: TelegramMessageFactory
 ) : Callback {
 
@@ -27,7 +27,7 @@ class DeprecateTasksByTopicConfirmCallback(
 
 		userSessionService.idleState(userId)
 
-		val affectedRows = playerApi.deprecateTasksByTopic(state.taskTopic())
+		val affectedRows = taskClient.deprecateTasksByTopic(state.taskTopic())
 
 		return telegramMessageFactory.editMessageText(
 			chatId = userId,
