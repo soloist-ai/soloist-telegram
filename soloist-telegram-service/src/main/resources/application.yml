@@ -50,6 +50,12 @@ app:
       player:
         host: localhost
         port: 11001
+      agent:
+        host: localhost
+        port: 11006
+      media:
+        host: localhost
+        port: 11006
   telegram:
     bot:
       token: ${TELEGRAM_BOT_TOKEN_DEV}
@@ -60,7 +66,7 @@ app:
         path: webhook
         secret-token: ${TELEGRAM_WEBHOOK_SECRET_TOKEN_DEV}
       mini-app:
-        url: ${TELEGRAM_MINI_APP_URL_DEV}
+        url: https://t.me/solo_leveling_dev_bot
       commands:
         users-stats:
           role: MANAGER

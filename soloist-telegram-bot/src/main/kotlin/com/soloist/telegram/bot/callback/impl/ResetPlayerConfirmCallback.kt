@@ -2,7 +2,7 @@ package com.soloist.telegram.bot.callback.impl
 
 import com.soloist.telegram.bot.annotation.TelegramCallback
 import com.soloist.telegram.bot.callback.Callback
-import com.soloist.telegram.bot.client.PlayerClient
+import com.soloist.telegram.bot.client.AdminClient
 import com.soloist.telegram.bot.service.localization.impl.PhotoSource
 import com.soloist.telegram.bot.service.message.TelegramMessageFactory
 import com.soloist.telegram.bot.service.message.TelegramMessageSender
@@ -24,7 +24,7 @@ import java.util.*
 @TelegramCallback(CallbackData.RESET_PLAYER_CONFIRM)
 class ResetPlayerConfirmCallback(
 	private val userSessionService: UserSessionService,
-	private val playerClient: PlayerClient,
+	private val adminClient: AdminClient,
 	private val userInfoService: UserInfoService,
 	private val telegramMessageFactory: TelegramMessageFactory,
 	private val telegramMessageSender: TelegramMessageSender
@@ -51,7 +51,7 @@ class ResetPlayerConfirmCallback(
 		log.info("Resetting player={}, requestedBy={}", resetUserId, userId)
 
 		try {
-			playerClient.resetPlayer(resetUserId)
+			adminClient.resetPlayer(resetUserId)
 
 		} catch (e: StatusRuntimeException) {
 			if (e.status.code == Status.Code.NOT_FOUND) {

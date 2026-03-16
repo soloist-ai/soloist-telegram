@@ -10,6 +10,12 @@ app:
       player:
         host: soloist-player
         port: 90
+      agent:
+        host: soloist-agent
+        port: 90
+      media:
+        host: soloist-media
+        port: 90
   telegram:
     bot:
       token: ${TELEGRAM_BOT_TOKEN_APP}
