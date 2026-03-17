@@ -31,22 +31,32 @@ class StateMessageHandler(
 
 		val currentState = session.state()
 
-		// Эти процессоры нужны в случае если у стейта в конечном итоге нет кнопок подтверждения
-		val processed = stateProcessorsMap[currentState::class]
-			?.process(message, currentState)
-			?: true
+		val processor = stateProcessorsMap[currentState::class]
+		if (processor != null) {
+			val processed = processor.process(message, currentState)
+			if (!processed) {
+				return telegramMessageFactory.sendMessage(message.chatId, currentState.onEnterLocalized())
+			}
 
-		if (!processed) {
-			return telegramMessageFactory.sendMessage(message.chatId, currentState.onEnterLocalized())
+			val newState = currentState.nextState(message)
+			if (currentState != newState) {
+				userSessionService.update(
+					Immutables.createUserSession(session) {
+						it.setState(newState).setPendingInterruptState(null)
+					}
+				)
+			}
+
+			return currentState.onExitMessageCode()?.let {
+				telegramMessageFactory.sendMessage(message.chatId, currentState.onExitLocalized()!!)
+			}
 		}
 
 		val newState = currentState.nextState(message)
-
 		if (currentState != newState) {
 			userSessionService.update(
 				Immutables.createUserSession(session) {
-					it.setState(newState)
-						.setPendingInterruptState(null)
+					it.setState(newState).setPendingInterruptState(null)
 				}
 			)
 		}

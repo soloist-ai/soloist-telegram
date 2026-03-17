@@ -14,9 +14,7 @@ import com.soloist.telegram.model.entity.user.state.newsletter.NewsletterNameSta
 import com.soloist.telegram.model.entity.user.state.newsletter.NewsletterPhotoState;
 import com.soloist.telegram.model.entity.user.state.player.ResetPlayerConfirmationState;
 import com.soloist.telegram.model.entity.user.state.player.ResetPlayerIdState;
-import com.soloist.telegram.model.entity.user.state.task.DeprecateAllTasksConfirmationState;
-import com.soloist.telegram.model.entity.user.state.task.DeprecateTasksByTopicConfirmationState;
-import com.soloist.telegram.model.entity.user.state.task.DeprecateTasksByTopicState;
+import com.soloist.telegram.model.entity.user.state.proof.ProofSubmissionState;
 import com.soloist.telegram.model.entity.user.state.transfer.TransferAmountState;
 import com.soloist.telegram.model.entity.user.state.transfer.TransferConfirmationState;
 import com.soloist.telegram.model.entity.user.state.transfer.TransferRecipientState;
@@ -32,16 +30,14 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
     @JsonSubTypes.Type(value = TransferRecipientState.class, name = "TransferRecipientState"),
     @JsonSubTypes.Type(value = TransferConfirmationState.class, name = "TransferConfirmationState"),
     @JsonSubTypes.Type(value = FeedbackMessageState.class, name = "FeedbackMessageState"),
-    @JsonSubTypes.Type(value = DeprecateTasksByTopicConfirmationState.class, name = "DeprecateTasksByTopicConfirmationState"),
-    @JsonSubTypes.Type(value = DeprecateTasksByTopicState.class, name = "DeprecateTasksByTopicState"),
-    @JsonSubTypes.Type(value = DeprecateAllTasksConfirmationState.class, name = "DeprecateAllTasksConfirmationState"),
     @JsonSubTypes.Type(value = ResetPlayerIdState.class, name = "ResetPlayerIdState"),
     @JsonSubTypes.Type(value = ResetPlayerConfirmationState.class, name = "ResetPlayerConfirmationState"),
     @JsonSubTypes.Type(value = NewsletterNameState.class, name = "NewsletterNameState"),
     @JsonSubTypes.Type(value = NewsletterMessageState.class, name = "NewsletterMessageState"),
     @JsonSubTypes.Type(value = NewsletterPhotoState.class, name = "NewsletterPhotoState"),
     @JsonSubTypes.Type(value = NewsletterDateTimeState.class, name = "NewsletterDateTimeState"),
-    @JsonSubTypes.Type(value = NewsletterConfirmationState.class, name = "NewsletterConfirmationState")
+    @JsonSubTypes.Type(value = NewsletterConfirmationState.class, name = "NewsletterConfirmationState"),
+    @JsonSubTypes.Type(value = ProofSubmissionState.class, name = "ProofSubmissionState")
 })
 public interface BotSessionState {
 

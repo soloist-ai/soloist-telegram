@@ -71,5 +71,9 @@ interface InterruptCommand : Command {
 			override val localized: Localized
 				get() = botSessionState.onEnterLocalized()
 		}
+
+		data class Info(
+			override val localized: Localized
+		) : InterruptCommandResult()
 	}
 }

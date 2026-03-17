@@ -5,6 +5,8 @@ import com.soloist.proto.admin.AdminServiceGrpc.AdminServiceBlockingStub
 import com.soloist.proto.config.GrpcChannelFactory
 import com.soloist.proto.media.MediaServiceGrpc
 import com.soloist.proto.media.MediaServiceGrpc.MediaServiceBlockingStub
+import com.soloist.proto.task.TaskServiceGrpc
+import com.soloist.proto.task.TaskServiceGrpc.TaskServiceBlockingStub
 import com.soloist.proto.user.UserServiceGrpc
 import com.soloist.proto.user.UserServiceGrpc.UserServiceBlockingStub
 import org.springframework.context.annotation.Bean
@@ -20,6 +22,10 @@ class GrpcStubConfig(private val grpc: GrpcChannelFactory) {
 	@Bean
 	fun adminStub(): AdminServiceBlockingStub =
 		grpc.stub("player") { AdminServiceGrpc.newBlockingStub(it) }
+
+	@Bean
+	fun taskStub(): TaskServiceBlockingStub =
+		grpc.stub("player") { TaskServiceGrpc.newBlockingStub(it) }
 
 	@Bean
 	fun mediaStub(): MediaServiceBlockingStub =

@@ -7,10 +7,6 @@ enum class StateCode(override val path: String) : LocalizationCode {
 	TRANSFER_CONFIRMATION("state.transfer.confirmation"),
 	FEEDBACK_ENTER("state.feedback.enter"),
 	FEEDBACK_EXIT("state.feedback.exit"),
-	TASKS_DEPRECATE_ALL_CONFIRMATION("state.tasks.deprecate-all.confirmation"),
-	TASKS_DEPRECATE_BY_TOPIC_ENTER("state.tasks.deprecate-by-topic.enter"),
-	TASKS_DEPRECATE_BY_TOPIC_CONFIRMATION("state.tasks.deprecate-by-topic.confirmation"),
-	TASKS_DEPRECATE_EXIT("state.tasks.deprecate.exit"),
 	RESET_PLAYER_ENTER("state.reset.player.enter"),
 	RESET_PLAYER_CONFIRMATION("state.reset.player.confirmation"),
 	RESET_PLAYER_EXIT("state.reset.player.exit"),
@@ -19,5 +15,8 @@ enum class StateCode(override val path: String) : LocalizationCode {
 	NEWSLETTER_PHOTO_ENTER("state.newsletter.photo.enter"),
 	NEWSLETTER_DATE_TIME_ENTER("state.newsletter.date-time.enter"),
 	NEWSLETTER_CONFIRMATION("state.newsletter.confirmation"),
-	NEWSLETTER_EXIT("state.newsletter.exit")
+	NEWSLETTER_EXIT("state.newsletter.exit"),
+	PROOF_SUBMISSION_TEXT("state.proof.submission.text"),
+	PROOF_SUBMISSION_PHOTO("state.proof.submission.photo"),
+	PROOF_SUBMISSION_VIDEO("state.proof.submission.video")
 }

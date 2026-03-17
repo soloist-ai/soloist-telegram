@@ -14,18 +14,6 @@ enum class Keyboard(
 			Callback(CallbackData.INTERRUPT_CONFIRM)
 		)
 	),
-	DEPRECATE_ALL_TASKS_CONFIRMATION(
-		listOf(
-			Callback(CallbackData.IDLE_CANCEL),
-			Callback(CallbackData.DEPRECATE_ALL_TASKS_CONFIRM)
-		)
-	),
-	DEPRECATE_TASKS_BY_TOPIC_CONFIRMATION(
-		listOf(
-			Callback(CallbackData.IDLE_CANCEL),
-			Callback(CallbackData.DEPRECATE_TASKS_BY_TOPIC_CONFIRM)
-		)
-	),
 	RESET_PLAYER_CONFIRMATION(
 		listOf(
 			Callback(CallbackData.IDLE_CANCEL),

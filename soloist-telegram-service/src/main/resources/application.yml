@@ -70,10 +70,6 @@ app:
       commands:
         users-stats:
           role: MANAGER
-        deprecate-all-tasks:
-          role: DEVELOPER
-        deprecate-tasks-by-topic:
-          role: DEVELOPER
         reset-player:
           role: DEVELOPER
         send-newsletter:
@@ -81,10 +77,6 @@ app:
         transfer:
           enabled: false
       callbacks:
-        deprecate-all-tasks-confirm:
-          role: DEVELOPER
-        deprecate-tasks-by-topic-confirm:
-          role: DEVELOPER
         reset-player-confirm:
           role: DEVELOPER
         send-newsletter-confirm:
